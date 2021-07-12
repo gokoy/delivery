@@ -39,9 +39,9 @@ public class JwtTokenProvider {
 		SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
 	}
 
-	public String createToken(String userPk, List<String> roles) {
-		// Claim에 데이터 저장
-		Claims claims = Jwts.claims().setSubject(userPk);
+	public String createToken(String email, List<String> roles) {
+		// claim의 subject로 email 저장
+		Claims claims = Jwts.claims().setSubject(email);
 		claims.put("roles", roles);
 		Date now = new Date();
 		return Jwts.builder()
@@ -53,11 +53,11 @@ public class JwtTokenProvider {
 	}
 
 	public Authentication getAuthentication(String token) {
-		UserDetails userDetails = memberServiceForAuth.loadUserByUsername(this.getUserPk(token));
+		UserDetails userDetails = memberServiceForAuth.loadUserByUsername(this.getEmail(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
 
-	private String getUserPk(String token) {
+	private String getEmail(String token) {
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
 	}
 
