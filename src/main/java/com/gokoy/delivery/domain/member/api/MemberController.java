@@ -44,6 +44,6 @@ public class MemberController {
 
 	@PostMapping("/sign-up")
 	public ResponseEntity<?> signUp(@Valid @RequestBody MemberSignUpRequest memberSignUpRequest) {
-		return ResponseEntity.ok().body(memberService.saveMember(memberSignUpRequest));
+		return ResponseEntity.ok().body(memberService.signUp(memberSignUpRequest));
 	}
 }

@@ -9,8 +9,8 @@ import com.gokoy.delivery.domain.member.dto.MemberSignInRequest;
 import com.gokoy.delivery.domain.member.dto.MemberSignUpRequest;
 import com.gokoy.delivery.global.config.security.JwtTokenProvider;
 import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
-import com.gokoy.delivery.global.error.exception.ErrorCode;
 import com.gokoy.delivery.global.error.exception.CustomInvalidValueException;
+import com.gokoy.delivery.global.error.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,23 +30,9 @@ public class MemberService {
 		return jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
 	}
 
-	public Member saveMember(MemberSignUpRequest memberSignUpRequest) {
-		if (existMember(memberSignUpRequest.getEmail())) {
-			throw new CustomInvalidValueException(ErrorCode.EMAIL_EXISTS);
-		}
-
-		return memberRepository.save(memberSignUpRequest.toEntity(passwordEncoder));
-	}
-
 	public Member getMember(String email) {
 		return memberRepository.findByEmail(email)
 			.orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
-	}
-
-	public boolean existMember(String email) {
-		Member member = memberRepository.findByEmail(email).orElse(null);
-
-		return member != null;
 	}
 
 	private boolean passwordMatching(String rawPassword, String encodedPassword) {
@@ -55,6 +41,20 @@ public class MemberService {
 		}
 
 		return true;
+	}
+
+	public Member signUp(MemberSignUpRequest memberSignUpRequest) {
+		if (existMember(memberSignUpRequest.getEmail())) {
+			throw new CustomInvalidValueException(ErrorCode.EMAIL_EXISTS);
+		}
+
+		return memberRepository.save(memberSignUpRequest.toEntity(passwordEncoder));
+	}
+
+	public boolean existMember(String email) {
+		Member member = memberRepository.findByEmail(email).orElse(null);
+
+		return member != null;
 	}
 
 }
