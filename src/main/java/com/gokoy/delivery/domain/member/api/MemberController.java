@@ -22,9 +22,19 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-	@GetMapping("/")
-	public String startPage() {
-		return "startPage";
+	@GetMapping("/anyone")
+	public String anyone() {
+		return "anyone";
+	}
+
+	@GetMapping("/normal")
+	public String normal(){
+		return "normal";
+	}
+
+	@GetMapping("/admin")
+	public String admin(){
+		return "admin";
 	}
 
 	@PostMapping("/sign-in")

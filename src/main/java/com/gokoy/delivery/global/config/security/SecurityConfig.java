@@ -38,12 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			// JWT 인증을 사용하기 때문에 Session 사용 안함
 			// ALWAYS : 항상 세션을 생성
 			// IF_REQUIRED : 세션 필요시 생성 (default)
-			// NAVER : 세션 생성하지 않지만, 기존에 존재하면 사용
+			// NEVER : 세션 생성하지 않지만, 기존에 존재하면 사용
 			// STATELESS : 세션 생성하지 않고 기존 것도 사용 안함
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.authorizeRequests()
-			.mvcMatchers("/", "/sign-up", "/sign-in").permitAll()
+			.mvcMatchers("/anyone", "/sign-up", "/sign-in").permitAll()
 			.mvcMatchers("/normal").hasRole("NORMAL")
 			.mvcMatchers("/admin").hasRole("ADMIN")
 			.and()
