@@ -15,6 +15,7 @@ JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 삽입
 
 #### Spring Security에서 제공하는 CSRF 보호 사용하지 않음
 
+---
 
 #### Sign-up Request Flow
 
@@ -23,8 +24,6 @@ JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 삽입
    1. 중복 시 Exception 발생
 3. 회원 정보 저장
 4. Response 반환(200)
-
----
 
 #### Sign-in Request Flow
 
