@@ -1,4 +1,6 @@
-## Spring Security 설정
+## Spring Security
+
+Spring 기반 어플리케이션의 인증과 인가 등 보안을 담당
 
 Spring Security와 관련된 설정을 재정의해서 사용할 수 있도록 SecurityConfig 클래스를 생성
 
