@@ -28,12 +28,12 @@ public class MemberController {
 	}
 
 	@GetMapping("/normal")
-	public String normal(){
+	public String normal() {
 		return "normal";
 	}
 
 	@GetMapping("/admin")
-	public String admin(){
+	public String admin() {
 		return "admin";
 	}
 

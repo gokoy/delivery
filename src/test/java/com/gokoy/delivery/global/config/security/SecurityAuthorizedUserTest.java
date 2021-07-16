@@ -32,7 +32,7 @@ public class SecurityAuthorizedUserTest {
 	@Test
 	@WithMockUser
 	public void forAnyone() throws Exception {
-		mvc.perform(get("/"))
+		mvc.perform(get("/anyone"))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 

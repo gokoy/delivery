@@ -32,7 +32,7 @@ public class SecurityAnonymousUserTest {
 
 	@Test
 	public void forAnyone() throws Exception {
-		mvc.perform(get("/"))
+		mvc.perform(get("/anyone"))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
