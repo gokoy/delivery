@@ -3,7 +3,6 @@ package com.gokoy.delivery.domain.member.application;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
