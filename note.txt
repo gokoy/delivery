@@ -1,0 +1,56 @@
+ExceptionHandlerFilter.java
+
+package com.gokoy.delivery.global.error.filter;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gokoy.delivery.global.error.exception.ErrorCode;
+import com.gokoy.delivery.global.error.response.ErrorResponse;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+
+public class ExceptionHandlerFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        try {
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+
+            ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INVALID_JWT_TOKEN, request.getRequestURI());
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setContentType("application/json");
+            response.getWriter().write(convertObjectToJson(errorResponse));
+        }
+    }
+
+    public String convertObjectToJson(Object object) throws JsonProcessingException {
+        if (object == null) {
+            return null;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
+    }
+}
+
+
+.addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
+.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+			
+public boolean validateToken(String jwtToken) {
+	try {
+		Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+		return !claims.getBody().getExpiration().before(new Date());
+	} catch (Exception e) {
+		throw new CustomInvalidJwtTokenException(ErrorCode.INVALID_JWT_TOKEN);
+	}
+}
