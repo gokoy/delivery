@@ -7,15 +7,18 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.gokoy.delivery.domain.model.Address;
+import com.gokoy.delivery.domain.model.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,8 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member implements UserDetails {
-
+public class Member extends BaseTimeEntity implements UserDetails {
 	@Id
 	@GeneratedValue
 	@Column(name = "member_id")
@@ -35,6 +37,11 @@ public class Member implements UserDetails {
 	private String email;
 
 	private String password;
+
+	private String nickname;
+
+	@Embedded
+	private Address address;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles = new ArrayList<>();

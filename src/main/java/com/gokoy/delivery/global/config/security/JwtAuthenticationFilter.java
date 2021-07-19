@@ -14,8 +14,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import lombok.RequiredArgsConstructor;
 
-// Custom Filter를 만들기 위해 GenericFilter 클래스 상속
-// Filter Interface를 구현하면 doFilter, init, destroy 메서드 모두 구현해야하지만, GenericFilter 클래스는 doFilter만 구현
+/*
+ * Custom Filter를 만들기 위해 GenericFilter 클래스 상속
+ * Filter Interface를 구현하면 doFilter, init, destroy 메서드 모두 구현해야하지만, GenericFilter Class는 doFilter만 구현
+ */
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilter {
 
