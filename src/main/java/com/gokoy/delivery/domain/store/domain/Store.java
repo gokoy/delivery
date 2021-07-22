@@ -1,6 +1,5 @@
 package com.gokoy.delivery.domain.store.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,13 +7,16 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
-import com.gokoy.delivery.domain.food.domain.Food;
+import com.gokoy.delivery.domain.menu.domain.Menu;
+import com.gokoy.delivery.domain.menugroup.domain.MenuGroup;
 import com.gokoy.delivery.domain.model.Address;
 import com.gokoy.delivery.domain.model.BaseTimeEntity;
 import com.gokoy.delivery.domain.model.Money;
+import com.gokoy.delivery.domain.option.domain.Option;
+import com.gokoy.delivery.domain.optiongroup.domain.MenuOption;
+import com.gokoy.delivery.domain.optiongroup.domain.OptionGroup;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,7 +38,6 @@ public class Store extends BaseTimeEntity {
 	@Embedded
 	private Address address;
 
-	@Lob
 	private String introduction;
 
 	@Embedded
@@ -45,6 +46,17 @@ public class Store extends BaseTimeEntity {
 	private Money minimumOrderPrice;
 
 	@OneToMany(mappedBy = "store")
-	private List<Food> foods = new ArrayList<>();
+	private List<MenuGroup> menuGroups;
 
+	@OneToMany(mappedBy = "store")
+	private List<Menu> menus;
+
+	@OneToMany(mappedBy = "store")
+	private List<OptionGroup> optionGroups;
+
+	@OneToMany(mappedBy = "store")
+	private List<Option> options;
+
+	@OneToMany(mappedBy = "store")
+	private List<MenuOption> menuOptions;
 }
