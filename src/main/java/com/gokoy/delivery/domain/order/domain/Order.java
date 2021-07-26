@@ -1,12 +1,8 @@
 package com.gokoy.delivery.domain.order.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,11 +39,7 @@ public class Order extends BaseTimeEntity {
 	@JoinColumn(name = "store_id")
 	private Store store;
 
-	@ElementCollection
-	@CollectionTable(name = "order_foods", joinColumns = {
-		@JoinColumn(name = "orders_id", referencedColumnName = "orders_id")
-	})
-	private List<String> orderFoods = new ArrayList<>();
+	private String orderFoods;
 
 	@Embedded
 	private Address address;
