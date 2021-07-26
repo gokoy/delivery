@@ -1,11 +1,10 @@
 package com.gokoy.delivery.domain.member.api;
 
+import static org.hamcrest.core.Is.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -21,7 +20,9 @@ import com.gokoy.delivery.domain.member.application.MemberService;
 import com.gokoy.delivery.domain.member.application.MemberServiceForAuth;
 import com.gokoy.delivery.domain.member.domain.Member;
 import com.gokoy.delivery.domain.member.dto.MemberSignInRequest;
+import com.gokoy.delivery.domain.member.dto.MemberSignInResponse;
 import com.gokoy.delivery.domain.member.dto.MemberSignUpRequest;
+import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.global.config.security.JwtTokenProvider;
 
 @WebMvcTest(MemberController.class)
@@ -43,10 +44,11 @@ class MemberControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Test
-	public void signIn() throws Exception {
+	public void sign_in_성공() throws Exception {
 		//given
-		String body = objectMapper.writeValueAsString(new MemberSignInRequest("gokoy@naver.com", "password"));
-		BDDMockito.given(memberService.signIn(any(MemberSignInRequest.class))).willReturn("token");
+		String body = objectMapper.writeValueAsString(new MemberSignInRequest("test@naver.com", "password"));
+		BDDMockito.given(memberService.signIn(any(MemberSignInRequest.class)))
+			.willReturn(new MemberSignInResponse("jwt"));
 
 		//when
 		ResultActions result = mvc.perform(post("/sign-in").content(body).contentType(MediaType.APPLICATION_JSON))
@@ -55,15 +57,17 @@ class MemberControllerTest {
 		//then
 		result
 			.andExpect(status().isOk())
-			.andDo(print());
+			.andExpect(jsonPath("$.jwt", is("jwt")));
 	}
 
 	@Test
-	public void signUp() throws Exception {
+	public void sign_up_성공() throws Exception {
 		//given
-		Member member = new Member("gokoy@naver.com", "password", Collections.singletonList("NORMAL"));
+		Member member = new Member("test@naver.com", "password", "nickname");
+
 		String body = objectMapper.writeValueAsString(member);
-		BDDMockito.given(memberService.signUp(any(MemberSignUpRequest.class))).willReturn(member);
+		BDDMockito.given(memberService.signUp(any(MemberSignUpRequest.class)))
+			.willReturn(SimpleResponse.success());
 
 		//when
 		ResultActions result = mvc.perform(
@@ -72,7 +76,7 @@ class MemberControllerTest {
 		//then
 		result
 			.andExpect(status().isOk())
-			.andDo(print());
+			.andExpect(jsonPath("$.message", is(SimpleResponse.success().getMessage())));
 	}
 
 }

@@ -2,7 +2,6 @@ package com.gokoy.delivery.global.config.security;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -37,10 +36,10 @@ public class JwtTokenProvider {
 		SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
 	}
 
-	public String createToken(String email, List<String> roles) {
+	public String createToken(String email, String role) {
 
 		Claims claims = Jwts.claims().setSubject(email); // claim의 subject로 email 저장
-		claims.put("roles", roles);
+		claims.put("role", role);
 		Date now = new Date();
 		return Jwts.builder()
 			.setClaims(claims)

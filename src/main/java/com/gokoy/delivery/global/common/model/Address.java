@@ -1,4 +1,4 @@
-package com.gokoy.delivery.domain.model;
+package com.gokoy.delivery.global.common.model;
 
 import javax.persistence.Embeddable;
 
@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Money {
-	private String unit;
-	private Integer value;
+public class Address {
+
+	private String address;
+
+	private String detail;
 }

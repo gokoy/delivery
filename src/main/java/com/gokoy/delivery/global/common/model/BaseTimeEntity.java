@@ -1,4 +1,4 @@
-package com.gokoy.delivery.domain.model;
+package com.gokoy.delivery.global.common.model;
 
 import java.time.LocalDateTime;
 

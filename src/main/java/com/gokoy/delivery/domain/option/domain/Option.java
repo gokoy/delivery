@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.gokoy.delivery.domain.model.Money;
+import com.gokoy.delivery.global.common.model.Money;
 import com.gokoy.delivery.domain.optiongroup.domain.OptionGroup;
 import com.gokoy.delivery.domain.store.domain.Store;
 

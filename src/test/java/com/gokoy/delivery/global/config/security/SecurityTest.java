@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -15,8 +16,7 @@ import com.gokoy.delivery.domain.member.application.MemberService;
 import com.gokoy.delivery.domain.member.application.MemberServiceForAuth;
 
 @WebMvcTest(value = MemberController.class)
-@WithAnonymousUser
-public class SecurityAnonymousUserTest {
+public class SecurityTest {
 
 	@Autowired
 	private MockMvc mvc;
@@ -31,14 +31,23 @@ public class SecurityAnonymousUserTest {
 	private MemberService memberService;
 
 	@Test
-	public void forAnyone() throws Exception {
+	@WithMockUser
+	public void 모든_사용자_접근_가능한_api() throws Exception {
 		mvc.perform(get("/anyone"))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	@Test
-	public void forAuthorizedUser() throws Exception {
-		mvc.perform(get("/normal"))
+	@WithMockUser(username = "member", roles = {"MEMBER"})
+	public void 회원만_접근_가능한_api_성공() throws Exception {
+		mvc.perform(get("/member"))
+			.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+
+	@Test
+	@WithAnonymousUser
+	public void 회원만_접근_가능한_api_실패() throws Exception {
+		mvc.perform(get("/member"))
 			.andExpect(MockMvcResultMatchers.status().is4xxClientError());
 	}
 }

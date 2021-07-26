@@ -1,5 +1,8 @@
 package com.gokoy.delivery.domain.member.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.gokoy.delivery.domain.member.domain.Member;
@@ -13,12 +16,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberSignInRequest {
 
+	@Email
+	@NotBlank
 	private String email;
 
+	@NotBlank
 	private String password;
-
-	public Member toEntity(PasswordEncoder passwordEncoder) {
-		return new Member(this.email, passwordEncoder.encode(this.password));
-	}
-
 }

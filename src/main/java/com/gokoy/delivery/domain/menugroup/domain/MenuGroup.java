@@ -1,5 +1,6 @@
 package com.gokoy.delivery.domain.menugroup.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -38,5 +39,5 @@ public class MenuGroup {
 	private Store store;
 
 	@OneToMany(mappedBy = "menuGroup")
-	private List<Menu> menus;
+	private List<Menu> menus = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
-package com.gokoy.delivery.domain.optiongroup.domain;
+package com.gokoy.delivery.domain.menuoption.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.gokoy.delivery.domain.menu.domain.Menu;
+import com.gokoy.delivery.domain.optiongroup.domain.OptionGroup;
 import com.gokoy.delivery.domain.store.domain.Store;
 
 import lombok.AccessLevel;
@@ -38,5 +40,5 @@ public class MenuOption {
 	private Menu menu;
 
 	@OneToMany(mappedBy = "menuOption")
-	private List<OptionGroup> optionGroups;
+	private List<OptionGroup> optionGroups = new ArrayList<>();
 }

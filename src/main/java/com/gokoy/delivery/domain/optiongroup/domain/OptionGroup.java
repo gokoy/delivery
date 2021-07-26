@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.gokoy.delivery.domain.menuoption.domain.MenuOption;
 import com.gokoy.delivery.domain.store.domain.Store;
 
 import lombok.AccessLevel;

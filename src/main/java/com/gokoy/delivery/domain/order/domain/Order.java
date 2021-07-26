@@ -1,10 +1,10 @@
 package com.gokoy.delivery.domain.order.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -17,9 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.gokoy.delivery.domain.member.domain.Member;
-import com.gokoy.delivery.domain.model.Address;
-import com.gokoy.delivery.domain.model.BaseTimeEntity;
-import com.gokoy.delivery.domain.model.Money;
+import com.gokoy.delivery.global.common.model.Address;
+import com.gokoy.delivery.global.common.model.BaseTimeEntity;
+import com.gokoy.delivery.global.common.model.Money;
 import com.gokoy.delivery.domain.store.domain.Store;
 
 import lombok.AccessLevel;
@@ -45,6 +45,7 @@ public class Order extends BaseTimeEntity {
 	private Store store;
 
 	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "order_foods")
 	private List<OrderFood> orderFoods = new ArrayList<>();
 
 	@Embedded

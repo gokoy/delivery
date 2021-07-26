@@ -37,12 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 인증을 사용하기 때문에 Session 사용 안함
 			.and()
 			.authorizeRequests()
-			.mvcMatchers("/anyone", "/sign-up", "/sign-in")
-			.permitAll()
-			.mvcMatchers("/normal")
-			.hasRole("NORMAL")
-			.mvcMatchers("/admin")
-			.hasRole("ADMIN")
+			.mvcMatchers("/anyone", "/sign-up", "/sign-in").permitAll()
+			.anyRequest().authenticated()
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
 				UsernamePasswordAuthenticationFilter.class); // 지정된 필터 앞에 커스텀 필터를 추가
