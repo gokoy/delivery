@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,10 +16,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.gokoy.delivery.domain.member.domain.Member;
+import com.gokoy.delivery.domain.store.domain.Store;
 import com.gokoy.delivery.global.common.model.Address;
 import com.gokoy.delivery.global.common.model.BaseTimeEntity;
 import com.gokoy.delivery.global.common.model.Money;
-import com.gokoy.delivery.domain.store.domain.Store;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,9 +43,11 @@ public class Order extends BaseTimeEntity {
 	@JoinColumn(name = "store_id")
 	private Store store;
 
-	@ElementCollection(fetch = FetchType.LAZY)
-	@CollectionTable(name = "order_foods")
-	private List<OrderFood> orderFoods = new ArrayList<>();
+	@ElementCollection
+	@CollectionTable(name = "order_foods", joinColumns = {
+		@JoinColumn(name = "orders_id", referencedColumnName = "orders_id")
+	})
+	private List<String> orderFoods = new ArrayList<>();
 
 	@Embedded
 	private Address address;
