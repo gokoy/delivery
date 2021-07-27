@@ -2,20 +2,25 @@ package com.gokoy.delivery.domain.member.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.gokoy.delivery.global.common.model.Address;
+import com.gokoy.delivery.global.common.model.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,8 +29,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member implements UserDetails {
-
+public class Member extends BaseTimeEntity implements UserDetails {
 	@Id
 	@GeneratedValue
 	@Column(name = "member_id")
@@ -36,23 +40,30 @@ public class Member implements UserDetails {
 
 	private String password;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	private List<String> roles = new ArrayList<>();
+	private String role;
 
-	public Member(String email, String password, List<String> roles) {
+	private String nickname;
+
+	@ElementCollection
+	@CollectionTable(name = "member_addresses", joinColumns = {
+		@JoinColumn(name = "member_id", referencedColumnName = "member_id")
+	})
+	private List<Address> addresses = new ArrayList<>();
+
+	@Enumerated(EnumType.STRING)
+	private Grade grade;
+
+	public Member(String email, String password, String nickname) {
 		this.email = email;
 		this.password = password;
-		this.roles = roles;
-	}
-
-	public Member(String email, String password) {
-		this.email = email;
-		this.password = password;
+		this.role = "MEMBER";
+		this.nickname = nickname;
+		this.grade = Grade.THANKFUL;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+		return Collections.singletonList(new SimpleGrantedAuthority(this.role));
 	}
 
 	@Override

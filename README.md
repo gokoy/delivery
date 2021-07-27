@@ -1,70 +1,81 @@
-Github
+# 개요
 
-Spring Boot
+배달의 민족과 같이 사용자가 가게에서 음식을 주문할 수 있는 서비스를 구현하고자 합니다.
 
-JPA
+토이 프로젝트에서 사용할 프레임워크 목록은 아래와 같습니다.
 
-Query DSL
+- Spring Boot
+- Spring Security + Json Web Token
+- JPA
+- Lombok
+- h2
 
-Mybatis
+배달의 민족 비즈니스를 모두 구현하기에는 무리가 있기 때문에, 단순한 비즈니스 로직을 우선적으로 구현하고 점차 넓혀가는 방식으로 구현을 할 예정입니다.
 
-Spring Security
+우선적으로, 사용자가 가게에서 음식을 주문하는 비즈니스 로직만 구현하도록 합니다.
 
-Jsonwebtoken
+# 도메인
 
-Lombok
+## 기본 도메인 설계
 
-H2
+- Member (일반 회원)
+    - 가게에서 음식을 주문하는 일반 회원입니다.
+- Boss (사장 회원)
+    - 소유한 가게를 등록하고 관리할 수 있는 사장 회원입니다.
+- Store (가게)
+    - 사장 회원이 소유할 수 있는 다양한 음식을 가진 가게입니다.
+- Order (주문)
+    - 일반 회원은 가게에서 음식을 주문할 수 있습니다.
 
-mariaDB
+> 현재는 일반 회원 도메인의 기능을 수행할 애플리케이션을 개발할 것이기 때문에 사장 회원 도메인의 기능은 별도 애플리케이션으로 개발하도록 합니다. 추후에 Store와 Order 도메인 애플리케이션도 분리하여 MSA를 지향하도록 합니다.
 
+### Entity Relation
 
+위의 도메인을 가지고 관계도를 그려보면 아래와 같은 도메인을 만들 수 있습니다.
 
-도메인 주도 설계
+![entity-Entity](./images/entity-Entity.jpg)
 
-도메인 모델
+## 상세 도메인 설계
 
-애그리거트
+각 도메인에 대한 상세적인 부분을 설계합니다.
 
-TDD
+### Member
 
+![entity-Member](./images/entity-Member.jpg)
 
+### Store
 
-시스템 아키텍처
+![entity-Store](./images/entity-Store.jpg)
 
+### Order
 
+![entity-Order](./images/entity-Order.jpg)
 
-Queue
+# 패키지 구조
 
-Batch
+> https://cheese10yun.github.io/spring-guide-directory/ 를 참고하여 도메인 형으로 패키지 구성
 
-Elasticsearch
+- src.main.java.com.gokoy.delivery
+    - domain
+        - member
+            - api
+            - application
+            - dao
+            - domain
+            - dto
+            - exception
+        - store
+        - order
+    - global
+        - common
+            - request
+            - response
+        - config
+            - security
+            - swagger
+        - error
+            - exception
+        - util
 
-
-
-
-
-요구사항
-
-
-
-사용자는 가게의 음식을 주문한다.
-
-
-
-- 이메일과 비밀번호로 로그인
-- 이메일, 비밀번호, 닉네임, 핸드폰 번호, 주소로 회원가입
-- 음식 분류 별로 가게를 볼 수 있음
-- 가게를 필터(거리, 평점 등)로 정렬할 수 있음
-- 가게를 선택하여 가게 정보와 판매하는 음식의 정보를 볼 수 있음
-- 가게를 선택해서 음식을 주문할 수 있음
-- 한 가게에서 여러개의 음식을 주문할 수 있음
-- 동시에 두 개 이상의 가게에서 음식을 주문할 수 없음
-- 음식으로 가게를 검색할 수 있음
-- 주문한 음식의 현재 상태를 알 수 있음
-- 이전에 주문했던 음식들의 목록을 볼 수 있음
-- 주문한 음식에 대한 리뷰를 작성할 수 있음
-- 회원 정보를 변경할 수 있음(비밀번호, 닉네임, 핸드폰 번호, 주소)
-
-
+# 인증, 인가
 

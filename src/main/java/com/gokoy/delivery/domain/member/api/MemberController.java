@@ -27,18 +27,13 @@ public class MemberController {
 		return "anyone";
 	}
 
-	@GetMapping("/normal")
+	@GetMapping("/member")
 	public String normal() {
-		return "normal";
-	}
-
-	@GetMapping("/admin")
-	public String admin() {
-		return "admin";
+		return "member";
 	}
 
 	@PostMapping("/sign-in")
-	public ResponseEntity<?> signIn(@RequestBody MemberSignInRequest memberSignInRequest) {
+	public ResponseEntity<?> signIn(@Valid @RequestBody MemberSignInRequest memberSignInRequest) {
 		return ResponseEntity.ok().body(memberService.signIn(memberSignInRequest));
 	}
 

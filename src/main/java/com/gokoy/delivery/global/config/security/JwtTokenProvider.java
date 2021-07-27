@@ -2,7 +2,6 @@ package com.gokoy.delivery.global.config.security;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +24,10 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class JwtTokenProvider {
 
-	// application.yaml에 설정된 JWT Token 생성 및 유효성 검증에 사용되는 SECRET KEY 값
-	@Value("spring.jwt.secret")
+	@Value("spring.jwt.secret") // application.yaml에 설정된 JWT Token 생성 및 유효성 검증에 사용되는 SECRET KEY 값
 	private String SECRET_KEY;
 
-	// 1000 milliseconds * 60 seconds * 60 minutes
-	private long tokenValidMillisecond = 1000L * 60 * 60;
+	private long tokenValidMillisecond = 1000L * 60 * 60; // 1000 milliseconds * 60 seconds * 60 minutes
 
 	private final MemberServiceForAuth memberServiceForAuth;
 
@@ -39,10 +36,10 @@ public class JwtTokenProvider {
 		SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
 	}
 
-	public String createToken(String email, List<String> roles) {
-		// claim의 subject로 email 저장
-		Claims claims = Jwts.claims().setSubject(email);
-		claims.put("roles", roles);
+	public String createToken(String email, String role) {
+
+		Claims claims = Jwts.claims().setSubject(email); // claim의 subject로 email 저장
+		claims.put("role", role);
 		Date now = new Date();
 		return Jwts.builder()
 			.setClaims(claims)
@@ -61,13 +58,17 @@ public class JwtTokenProvider {
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
 	}
 
-	// Request의 Header에서 token 파싱 : "X-AUTH-TOKEN: jwt토큰"
-	// X prefix가 붙은 Header는 사용자가 직접 정의했다는 의미
+	/*
+	 * Request의 Header에서 token 파싱 : "X-AUTH-TOKEN: jwt토큰"
+	 * X prefix가 붙은 Header는 사용자가 직접 정의했다는 의미
+	 */
 	public String resolveToken(HttpServletRequest req) {
 		return req.getHeader("X-AUTH-TOKEN");
 	}
 
-	// Jwt 토큰의 유효성 + 만료일자 확인
+	/*
+	 * Jwt 토큰의 유효성 + 만료일자 확인
+	 */
 	public boolean validateToken(String jwtToken) {
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
