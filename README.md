@@ -79,3 +79,27 @@
 
 # 인증, 인가
 
+[Spring Security](./src/main/java/com/gokoy/delivery/global/config/security/README.md)
+
+# 예외 처리
+
+[Exception Handling](./src/main/java/com/gokoy/delivery/global/error/README.md)
+
+# Swagger 설정
+
+[Swagger Setting](./src/main/java/com/gokoy/delivery/global/config/swagger/README.md)
+
+---
+
+# 도메인 로직 구현
+
+## Member 도메인 로직 구현
+
+### 
+
+- 회원 가입
+- 로그인
+- 회원 정보 조회
+- 회원 정보 수정
+- 회원 탈퇴
+- 
