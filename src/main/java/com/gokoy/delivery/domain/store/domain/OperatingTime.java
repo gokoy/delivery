@@ -16,4 +16,10 @@ public class OperatingTime {
 	private LocalTime startTime;
 
 	private LocalTime endTime;
+
+	public OperatingTime(Integer day, LocalTime startTime, LocalTime endTime) {
+		this.day = day;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 }

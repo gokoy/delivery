@@ -15,4 +15,9 @@ public class Money {
 	private String unit;
 
 	private Integer value;
+
+	public Money(Integer value) {
+		this.value = value;
+		this.unit = "won";
+	}
 }
