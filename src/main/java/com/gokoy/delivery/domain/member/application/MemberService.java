@@ -4,13 +4,14 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.domain.member.dao.MemberRepository;
 import com.gokoy.delivery.domain.member.domain.Member;
 import com.gokoy.delivery.domain.member.dto.MemberSignInRequest;
 import com.gokoy.delivery.domain.member.dto.MemberSignInResponse;
 import com.gokoy.delivery.domain.member.dto.MemberSignUpRequest;
+import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.global.config.security.JwtTokenProvider;
 import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
 import com.gokoy.delivery.global.error.exception.CustomInvalidValueException;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
 	private final MemberRepository memberRepository;
@@ -45,6 +47,7 @@ public class MemberService {
 		}
 	}
 
+	@Transactional
 	public SimpleResponse signUp(MemberSignUpRequest memberSignUpRequest) {
 		existMember(memberSignUpRequest.getEmail());
 
