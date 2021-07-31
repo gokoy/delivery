@@ -38,6 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 			.mvcMatchers("/anyone", "/sign-up", "/sign-in").permitAll()
+			.mvcMatchers("/v2/**",
+				"/configuration/**",
+				"/swagger*/**",
+				"/webjars/**",
+				"/swagger-resources/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
