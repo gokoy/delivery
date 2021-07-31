@@ -1,14 +1,15 @@
 package com.gokoy.delivery.domain.member.application;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,7 +44,7 @@ class MemberServiceTest {
 	public void sign_in_이메일_존재_안함() {
 		//given
 		MemberSignInRequest userInput = new MemberSignInRequest("test@naver.com", "password");
-		BDDMockito.given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.empty());
+		given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.empty());
 
 		//when
 		//then
@@ -55,7 +56,7 @@ class MemberServiceTest {
 		//given
 		MemberSignInRequest userInput = new MemberSignInRequest("test@naver.com", "password");
 		Member foundMember = new Member("test@naver.com", "pass", "nickname");
-		BDDMockito.given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.of(foundMember));
+		given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.of(foundMember));
 
 		//when
 		//then
@@ -68,17 +69,17 @@ class MemberServiceTest {
 		MemberSignInRequest userInput = new MemberSignInRequest("test@naver.com", "password");
 		Member foundMember = new Member("test@naver.com", "password", "nickname");
 
-		BDDMockito.given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.of(foundMember));
-		BDDMockito.given(passwordEncoder.matches(userInput.getPassword(), foundMember.getPassword()))
+		given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.of(foundMember));
+		given(passwordEncoder.matches(userInput.getPassword(), foundMember.getPassword()))
 			.willReturn(true);
-		BDDMockito.given(jwtTokenProvider.createToken(foundMember.getEmail(), foundMember.getRole()))
+		given(jwtTokenProvider.createToken(foundMember.getEmail(), foundMember.getRole()))
 			.willReturn("jwt");
 
 		//when
 		MemberSignInResponse result = memberService.signIn(userInput);
 
 		//then
-		Assertions.assertThat(result.getJwt()).isEqualTo("jwt");
+		assertThat(result.getJwt()).isEqualTo("jwt");
 	}
 
 	@Test
@@ -86,7 +87,7 @@ class MemberServiceTest {
 		//given
 		MemberSignUpRequest userInput = new MemberSignUpRequest("test@naver.com", "password", "nickname");
 		Member foundMember = new Member("test@naver.com", "password", "nickname");
-		BDDMockito.given(memberRepository.findByEmail(userInput.getEmail()))
+		given(memberRepository.findByEmail(userInput.getEmail()))
 			.willReturn(java.util.Optional.of(foundMember));
 
 		//when
@@ -98,16 +99,16 @@ class MemberServiceTest {
 	public void sign_up_성공() {
 		//given
 		MemberSignUpRequest userInput = new MemberSignUpRequest("test@naver.com", "password", "nickname");
-		BDDMockito.given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.empty());
-		BDDMockito.given(passwordEncoder.encode(userInput.getPassword())).willReturn("password");
+		given(memberRepository.findByEmail(userInput.getEmail())).willReturn(Optional.empty());
+		given(passwordEncoder.encode(userInput.getPassword())).willReturn("password");
 		Member returnMember = new Member("test@naver.com", "password", "nickname");
-		BDDMockito.given(memberRepository.save(any(Member.class))).willReturn(returnMember);
+		given(memberRepository.save(any(Member.class))).willReturn(returnMember);
 
 		//when
 		SimpleResponse response = memberService.signUp(userInput);
 
 		//then
-		Assertions.assertThat(response.getMessage()).isEqualTo(SimpleResponse.success().getMessage());
+		assertThat(response.getMessage()).isEqualTo(SimpleResponse.success().getMessage());
 	}
 
 }
