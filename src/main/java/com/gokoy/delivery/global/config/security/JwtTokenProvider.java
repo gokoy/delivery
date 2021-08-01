@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
+	public static final String AUTH_HEADER = "X-AUTH-TOKEN";
 
 	@Value("spring.jwt.secret") // application.yaml에 설정된 JWT Token 생성 및 유효성 검증에 사용되는 SECRET KEY 값
 	private String SECRET_KEY;
@@ -63,7 +64,7 @@ public class JwtTokenProvider {
 	 * X prefix가 붙은 Header는 사용자가 직접 정의했다는 의미
 	 */
 	public String resolveToken(HttpServletRequest req) {
-		return req.getHeader("X-AUTH-TOKEN");
+		return req.getHeader(AUTH_HEADER);
 	}
 
 	/*
