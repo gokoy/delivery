@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.validator.constraints.Range;
@@ -14,6 +15,7 @@ import com.gokoy.delivery.domain.store.domain.OperatingTime;
 import com.gokoy.delivery.domain.store.domain.Store;
 import com.gokoy.delivery.global.common.model.Address;
 import com.gokoy.delivery.global.common.model.Money;
+import com.gokoy.delivery.global.config.validation.Enum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,17 +48,17 @@ public class StoreCreateRequest {
 	private Integer openDays;
 
 	@NotBlank
-	@Pattern(regexp = "^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", message = "올바른 시간을 입력해주세요. (ex. 01:25)")
+	@Pattern(regexp = "^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", message = "24시 기준의 올바른 시간을 입력해주세요. (ex. 01:25)")
 	private String openTime;
 
 	@NotBlank
-	@Pattern(regexp = "^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", message = "올바른 시간을 입력해주세요. (ex. 01:25)")
+	@Pattern(regexp = "^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", message = "24시 기준의 올바른 시간을 입력해주세요. (ex. 01:25)")
 	private String closeTime;
 
-	@PositiveOrZero
+	@Positive
 	private Integer minimumOrderPrice;
 
-	@NotBlank
+	@Enum(enumClass = Category.class, message = "올바른 카테고리 명을 입력해주세요.")
 	private String category;
 
 	public Store toEntity() {
