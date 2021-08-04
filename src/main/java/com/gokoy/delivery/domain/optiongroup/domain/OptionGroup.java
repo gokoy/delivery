@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 
 import com.gokoy.delivery.domain.menuoption.domain.MenuOption;
 import com.gokoy.delivery.domain.store.domain.Store;
+import com.gokoy.delivery.global.common.model.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OptionGroup {
+public class OptionGroup extends BaseTimeEntity {
 	@Id
 	@GeneratedValue
 	@Column(name = "option_group_id")

@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import com.gokoy.delivery.domain.menu.domain.Menu;
 import com.gokoy.delivery.domain.optiongroup.domain.OptionGroup;
 import com.gokoy.delivery.domain.store.domain.Store;
+import com.gokoy.delivery.global.common.model.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MenuOption {
+public class MenuOption extends BaseTimeEntity {
 	@Id
 	@GeneratedValue
 	@Column(name = "menu_option_id")

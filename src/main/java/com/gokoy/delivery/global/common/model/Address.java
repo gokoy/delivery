@@ -11,10 +11,10 @@ public class Address {
 
 	private String address;
 
-	private String detail;
+	private String addressDetail;
 
-	public Address(String address, String detail) {
+	public Address(String address, String addressDetail) {
 		this.address = address;
-		this.detail = detail;
+		this.addressDetail = addressDetail;
 	}
 }

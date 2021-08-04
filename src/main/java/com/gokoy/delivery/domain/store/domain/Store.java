@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -62,8 +64,18 @@ public class Store extends BaseTimeEntity {
 	private OperatingTime operatingTime;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "value", column = @Column(name = "minimum_order_price"))
+	})
 	@NotNull
 	private Money minimumOrderPrice;
+
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "value", column = @Column(name = "delivery_tip"))
+	})
+	@NotNull
+	private Money deliveryTip;
 
 	@ElementCollection
 	@CollectionTable(name = "store_category", joinColumns = {
@@ -88,7 +100,7 @@ public class Store extends BaseTimeEntity {
 
 	@Builder
 	public Store(String name, String phone, String introduction, Address address,
-		OperatingTime operatingTime, Money minimumOrderPrice,
+		OperatingTime operatingTime, Money minimumOrderPrice, Money deliveryTip,
 		Set<Category> categories) {
 
 		Assert.hasText(name, "name must have text");
@@ -96,6 +108,7 @@ public class Store extends BaseTimeEntity {
 		Assert.notNull(address, "address must not be null");
 		Assert.notNull(operatingTime, "operatingTime must not be null");
 		Assert.notNull(minimumOrderPrice, "minimumOrderPrice must not be null");
+		Assert.notNull(deliveryTip, "deliveryTip must not be null");
 		Assert.notEmpty(categories, "categories must not be empty");
 
 		this.name = name;
@@ -104,6 +117,7 @@ public class Store extends BaseTimeEntity {
 		this.address = address;
 		this.operatingTime = operatingTime;
 		this.minimumOrderPrice = minimumOrderPrice;
+		this.deliveryTip = deliveryTip;
 		this.categories = categories;
 	}
 }

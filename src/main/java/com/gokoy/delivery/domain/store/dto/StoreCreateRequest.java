@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.validator.constraints.Range;
 
@@ -41,7 +40,7 @@ public class StoreCreateRequest {
 	private String address;
 
 	@NotBlank
-	private String detailAddress;
+	private String addressDetail;
 
 	@Range(min = 0, max = 1 << 7, message = "0 ~ 128 사이의 숫자를 입력해주세요. "
 		+ "(2진수로 변환하여 '월화수목금토일' 순서로 확인했을 때, 1이면 영업일로 확인)")
@@ -58,6 +57,9 @@ public class StoreCreateRequest {
 	@Positive
 	private Integer minimumOrderPrice;
 
+	@Positive
+	private Integer deliveryTip;
+
 	@Enum(enumClass = Category.class, message = "올바른 카테고리 명을 입력해주세요.")
 	private String category;
 
@@ -66,10 +68,11 @@ public class StoreCreateRequest {
 			.name(this.name)
 			.phone(this.phone)
 			.introduction(this.introduction)
-			.address(new Address(this.address, this.detailAddress))
+			.address(new Address(this.address, this.addressDetail))
 			.operatingTime(
 				new OperatingTime(this.openDays, LocalTime.parse(this.openTime), LocalTime.parse(this.closeTime)))
 			.minimumOrderPrice(new Money(this.minimumOrderPrice))
+			.deliveryTip(new Money(this.deliveryTip))
 			.categories(Set.of(Category.valueOf(this.category)))
 			.build();
 	}

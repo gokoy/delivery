@@ -2,6 +2,8 @@ package com.gokoy.delivery.domain.order.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -42,9 +44,17 @@ public class Order extends BaseTimeEntity {
 	private String orderFoods;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "address", column = @Column(name = "delivery_address")),
+		@AttributeOverride(name = "addressDetail", column = @Column(name = "delivery_address_detail")),
+
+	})
 	private Address address;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "value", column = @Column(name = "total_price"))
+	})
 	private Money totalPrice;
 
 	private LocalDateTime orderTime;
