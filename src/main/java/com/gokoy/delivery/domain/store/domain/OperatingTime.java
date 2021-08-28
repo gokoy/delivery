@@ -5,21 +5,23 @@ import java.time.LocalTime;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class OperatingTime {
 
-	private Integer day;
+	private Integer businessDay;
 
-	private LocalTime startTime;
+	private LocalTime openTime;
 
-	private LocalTime endTime;
+	private LocalTime closeTime;
 
-	public OperatingTime(Integer day, LocalTime startTime, LocalTime endTime) {
-		this.day = day;
-		this.startTime = startTime;
-		this.endTime = endTime;
+	public OperatingTime(Integer businessDay, LocalTime openTime, LocalTime closeTime) {
+		this.businessDay = businessDay;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
 	}
 }

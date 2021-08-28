@@ -34,17 +34,18 @@ public class StoreCreateRequest {
 	@Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "올바른 번호를 입력해주세요. (ex. 010-1234-5678)")
 	private String phone;
 
+	@Builder.Default
 	private String introduction = "";
 
 	@NotBlank
-	private String address;
+	private String addressName;
 
 	@NotBlank
 	private String addressDetail;
 
 	@Range(min = 0, max = 1 << 7, message = "0 ~ 128 사이의 숫자를 입력해주세요. "
 		+ "(2진수로 변환하여 '월화수목금토일' 순서로 확인했을 때, 1이면 영업일로 확인)")
-	private Integer openDays;
+	private Integer businessDay;
 
 	@NotBlank
 	@Pattern(regexp = "^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", message = "24시 기준의 올바른 시간을 입력해주세요. (ex. 01:25)")
@@ -68,9 +69,9 @@ public class StoreCreateRequest {
 			.name(this.name)
 			.phone(this.phone)
 			.introduction(this.introduction)
-			.address(new Address(this.address, this.addressDetail))
+			.address(new Address(this.addressName, this.addressDetail))
 			.operatingTime(
-				new OperatingTime(this.openDays, LocalTime.parse(this.openTime), LocalTime.parse(this.closeTime)))
+				new OperatingTime(this.businessDay, LocalTime.parse(this.openTime), LocalTime.parse(this.closeTime)))
 			.minimumOrderPrice(new Money(this.minimumOrderPrice))
 			.deliveryTip(new Money(this.deliveryTip))
 			.categories(Set.of(Category.valueOf(this.category)))

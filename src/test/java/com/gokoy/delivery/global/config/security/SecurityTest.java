@@ -30,24 +30,17 @@ public class SecurityTest {
 	@MockBean
 	private MemberService memberService;
 
-	@Test
-	@WithMockUser
-	public void 모든_사용자_접근_가능한_api() throws Exception {
-		mvc.perform(get("/anyone"))
-			.andExpect(MockMvcResultMatchers.status().isOk());
-	}
-
-	@Test
-	@WithMockUser(username = "member", roles = {"MEMBER"})
-	public void 회원만_접근_가능한_api_성공() throws Exception {
-		mvc.perform(get("/member"))
-			.andExpect(MockMvcResultMatchers.status().isOk());
-	}
-
-	@Test
-	@WithAnonymousUser
-	public void 회원만_접근_가능한_api_실패() throws Exception {
-		mvc.perform(get("/member"))
-			.andExpect(MockMvcResultMatchers.status().is4xxClientError());
-	}
+//	@Test
+//	@WithMockUser(username = "member", roles = {"MEMBER"})
+//	public void 회원만_접근_가능한_api_성공() throws Exception {
+//		mvc.perform(get("/member"))
+//			.andExpect(MockMvcResultMatchers.status().isOk());
+//	}
+//
+//	@Test
+//	@WithAnonymousUser
+//	public void 회원만_접근_가능한_api_실패() throws Exception {
+//		mvc.perform(get("/member"))
+//			.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+//	}
 }

@@ -3,18 +3,20 @@ package com.gokoy.delivery.global.common.model;
 import javax.persistence.Embeddable;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Address {
 
-	private String address;
+	private String name;
 
-	private String addressDetail;
+	private String detail;
 
-	public Address(String address, String addressDetail) {
-		this.address = address;
-		this.addressDetail = addressDetail;
+	public Address(String name, String addressDetail) {
+		this.name = name;
+		this.detail = addressDetail;
 	}
 }
