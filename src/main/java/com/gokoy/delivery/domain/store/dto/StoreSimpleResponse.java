@@ -1,4 +1,4 @@
-package com.gokoy.delivery.domain.member.dto;
+package com.gokoy.delivery.domain.store.dto;
 
 import com.gokoy.delivery.domain.store.domain.Category;
 import com.gokoy.delivery.domain.store.domain.Store;
@@ -11,13 +11,9 @@ import java.util.stream.Collectors;
 
 @Builder
 @AllArgsConstructor
-public class StoreResponse {
+public class StoreSimpleResponse {
     private Long id;
     private String name;
-    private String phone;
-    private String introduction;
-    private String addressName;
-    private String addressDetail;
     private Integer businessDay;
     private LocalTime openTime;
     private LocalTime closeTime;
@@ -25,14 +21,10 @@ public class StoreResponse {
     private Integer deliveryTip;
     private Set<String> categories;
 
-    public static StoreResponse getInstance(Store store) {
-        return StoreResponse.builder()
+    public static StoreSimpleResponse getInstance(Store store) {
+        return StoreSimpleResponse.builder()
                 .id(store.getId())
                 .name(store.getName())
-                .phone(store.getPhone())
-                .introduction(store.getIntroduction())
-                .addressName(store.getAddress().getName())
-                .addressDetail(store.getAddress().getDetail())
                 .businessDay(store.getOperatingTime().getBusinessDay())
                 .openTime(store.getOperatingTime().getOpenTime())
                 .closeTime(store.getOperatingTime().getCloseTime())
