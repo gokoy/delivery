@@ -51,7 +51,7 @@ class MemberControllerTest {
 			.willReturn(new MemberSignInResponse("jwt"));
 
 		//when
-		ResultActions result = mvc.perform(post("/sign-in").content(body).contentType(MediaType.APPLICATION_JSON))
+		ResultActions result = mvc.perform(post("/member/sign-in").content(body).contentType(MediaType.APPLICATION_JSON))
 			.andDo(print());
 
 		//then
@@ -71,7 +71,7 @@ class MemberControllerTest {
 
 		//when
 		ResultActions result = mvc.perform(
-			post("/sign-up").content(body).contentType(MediaType.APPLICATION_JSON)).andDo(print());
+			post("/member/sign-up").content(body).contentType(MediaType.APPLICATION_JSON)).andDo(print());
 
 		//then
 		result
