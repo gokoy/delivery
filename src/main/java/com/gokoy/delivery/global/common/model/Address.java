@@ -15,8 +15,8 @@ public class Address {
 
 	private String detail;
 
-	public Address(String name, String addressDetail) {
+	public Address(String name, String detail) {
 		this.name = name;
-		this.detail = addressDetail;
+		this.detail = detail;
 	}
 }
