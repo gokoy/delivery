@@ -1,5 +1,6 @@
 package com.gokoy.delivery.domain.store.domain;
 
+import com.gokoy.delivery.domain.category.Category;
 import com.gokoy.delivery.domain.menu.domain.Menu;
 import com.gokoy.delivery.domain.menugroup.domain.MenuGroup;
 import com.gokoy.delivery.domain.menuoption.domain.MenuOption;
@@ -8,15 +9,14 @@ import com.gokoy.delivery.domain.optiongroup.domain.OptionGroup;
 import com.gokoy.delivery.global.common.model.Address;
 import com.gokoy.delivery.global.common.model.BaseTimeEntity;
 import com.gokoy.delivery.global.common.model.Money;
-import lombok.*;
-import org.springframework.util.Assert;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -61,12 +61,6 @@ public class Store extends BaseTimeEntity {
     @NotNull
     private Money deliveryTip;
 
-    @ElementCollection
-    @CollectionTable(name = "store_category", joinColumns = {
-            @JoinColumn(name = "store_id", referencedColumnName = "store_id")})
-    @Enumerated(EnumType.STRING)
-    private Set<Category> categories = new HashSet<>();
-
     //연관관계
 
     @OneToMany(mappedBy = "store")
@@ -84,26 +78,6 @@ public class Store extends BaseTimeEntity {
     @OneToMany(mappedBy = "store")
     private List<MenuOption> menuOptions = new ArrayList<>();
 
-    @Builder
-    public Store(String name, String phone, String introduction, Address address,
-                 OperatingTime operatingTime, Money minimumOrderPrice, Money deliveryTip,
-                 Set<Category> categories) {
-
-        Assert.hasText(name, "name must have text");
-        Assert.hasText(phone, "phone must have text");
-        Assert.notNull(address, "address must not be null");
-        Assert.notNull(operatingTime, "operatingTime must not be null");
-        Assert.notNull(minimumOrderPrice, "minimumOrderPrice must not be null");
-        Assert.notNull(deliveryTip, "deliveryTip must not be null");
-        Assert.notEmpty(categories, "categories must not be empty");
-
-        this.name = name;
-        this.phone = phone;
-        this.introduction = introduction;
-        this.address = address;
-        this.operatingTime = operatingTime;
-        this.minimumOrderPrice = minimumOrderPrice;
-        this.deliveryTip = deliveryTip;
-        this.categories = categories;
-    }
+    @OneToMany(mappedBy = "store")
+    private List<Category> categories = new ArrayList<>();
 }

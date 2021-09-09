@@ -1,6 +1,6 @@
-package com.gokoy.delivery.domain.store.domain;
+package com.gokoy.delivery.domain.category;
 
-public enum Category {
+public enum StoreType {
 
 	KOREAN(1, "한식"),
 	SCHOOL_FOOD(2, "분식"),
@@ -21,7 +21,7 @@ public enum Category {
 
 	private String type;
 
-	Category(Integer id, String type) {
+	StoreType(Integer id, String type) {
 		this.id = id;
 		this.type = type;
 	}
