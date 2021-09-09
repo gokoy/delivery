@@ -4,12 +4,30 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+#    data: classpath:resources/data.sql
   jpa:
     hibernate:
       ddl-auto: create
-    show-sql: true
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        use_sql_comments: false
   jwt:
     secret: secret
   h2:
     console:
       enabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
