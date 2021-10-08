@@ -1,6 +1,7 @@
 package com.gokoy.delivery.domain.store.domain;
 
 import com.gokoy.delivery.domain.category.Category;
+import com.gokoy.delivery.domain.category.StoreType;
 import com.gokoy.delivery.domain.menu.domain.Menu;
 import com.gokoy.delivery.domain.menugroup.domain.MenuGroup;
 import com.gokoy.delivery.domain.menuoption.domain.MenuOption;
@@ -9,7 +10,9 @@ import com.gokoy.delivery.domain.optiongroup.domain.OptionGroup;
 import com.gokoy.delivery.global.common.model.Address;
 import com.gokoy.delivery.global.common.model.BaseTimeEntity;
 import com.gokoy.delivery.global.common.model.Money;
+import io.jsonwebtoken.lang.Assert;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,11 +43,10 @@ public class Store extends BaseTimeEntity {
             @AttributeOverride(name = "name", column = @Column(name = "address_name")),
             @AttributeOverride(name = "detail", column = @Column(name = "address_detail")),
     })
-    @NotNull
+
     private Address address;
 
     @Embedded
-    @NotNull
     private OperatingTime operatingTime;
 
     @Embedded
@@ -58,7 +60,6 @@ public class Store extends BaseTimeEntity {
     @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "delivery_tip"))
     })
-    @NotNull
     private Money deliveryTip;
 
     //연관관계
@@ -80,4 +81,21 @@ public class Store extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "store")
     private List<Category> categories = new ArrayList<>();
+
+    @Builder
+    public Store(String name, String phone, Money minimumOrderPrice) {
+        Assert.hasText(name, "name must not be empty");
+        Assert.hasText(phone, "phone must not be empty");
+        Assert.notNull(minimumOrderPrice, "minimumOrderPrice must not be empty");
+
+        this.name = name;
+        this.phone = phone;
+        this.minimumOrderPrice = minimumOrderPrice;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
+        category.setStore(this);
+    }
+
 }

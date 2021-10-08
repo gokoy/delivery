@@ -23,4 +23,12 @@ public class Category {
 
     @Enumerated(EnumType.STRING)
     private StoreType storeType;
+
+    public Category(StoreType storeType) {
+        this.storeType = storeType;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
 }
