@@ -1,4 +1,4 @@
-package com.gokoy.delivery.domain.category;
+package com.gokoy.delivery.domain.store.domain;
 
 public enum StoreType {
 

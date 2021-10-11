@@ -1,7 +1,5 @@
 package com.gokoy.delivery.domain.store.domain;
 
-import com.gokoy.delivery.domain.category.Category;
-import com.gokoy.delivery.domain.category.StoreType;
 import com.gokoy.delivery.domain.menu.domain.Menu;
 import com.gokoy.delivery.domain.menugroup.domain.MenuGroup;
 import com.gokoy.delivery.domain.menuoption.domain.MenuOption;
@@ -19,7 +17,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -43,7 +43,6 @@ public class Store extends BaseTimeEntity {
             @AttributeOverride(name = "name", column = @Column(name = "address_name")),
             @AttributeOverride(name = "detail", column = @Column(name = "address_detail")),
     })
-
     private Address address;
 
     @Embedded
@@ -79,8 +78,8 @@ public class Store extends BaseTimeEntity {
     @OneToMany(mappedBy = "store")
     private List<MenuOption> menuOptions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
-    private List<Category> categories = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<Category> categories = new HashSet<>();
 
     @Builder
     public Store(String name, String phone, Money minimumOrderPrice) {
@@ -93,9 +92,9 @@ public class Store extends BaseTimeEntity {
         this.minimumOrderPrice = minimumOrderPrice;
     }
 
-    public void addCategory(Category category) {
+    public Store addCategory(Category category) {
         this.categories.add(category);
-        category.setStore(this);
+        return this;
     }
 
 }

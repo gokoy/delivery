@@ -4,7 +4,8 @@ public enum ErrorCode {
 	EMAIL_NOT_FOUND(404, "C001", "Email not found"),
 	EMAIL_EXISTS(400, "C002", "The email already exists"),
 	PWD_MISMATCH(400, "C003", "The passwords do not match"),
-	ARGUMENT_NOT_VALID(400, "C004", "The argument is not valid")
+	ARGUMENT_NOT_VALID(400, "C004", "The argument is not valid"),
+	NO_RESULT(404, "C005", "No results were found for your search")
 	;
 
 	private int status;
