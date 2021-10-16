@@ -10,7 +10,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.gokoy.delivery.domain.member.application.MemberServiceForAuth;
+import com.gokoy.delivery.domain.consumer.application.ConsumerServiceForAuth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtTokenProvider jwtTokenProvider;
-	private final MemberServiceForAuth memberServiceForAuth;
+	private final ConsumerServiceForAuth consumerServiceForAuth;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 인증을 사용하기 때문에 Session 사용 안함
 			.and()
 			.authorizeRequests()
-			.mvcMatchers("/member/sign-up", "/member/sign-in").permitAll()
+			.mvcMatchers("/consumer/sign-up", "/consumer/sign-in").permitAll()
 			.mvcMatchers("/v2/**",
 				"/configuration/**",
 				"/swagger*/**",
@@ -52,6 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(memberServiceForAuth);
+		auth.userDetailsService(consumerServiceForAuth);
 	}
 }

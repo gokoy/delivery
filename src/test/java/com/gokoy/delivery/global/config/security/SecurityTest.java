@@ -1,21 +1,15 @@
 package com.gokoy.delivery.global.config.security;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.gokoy.delivery.domain.member.api.MemberController;
-import com.gokoy.delivery.domain.member.application.MemberService;
-import com.gokoy.delivery.domain.member.application.MemberServiceForAuth;
+import com.gokoy.delivery.domain.consumer.api.ConsumerController;
+import com.gokoy.delivery.domain.consumer.application.ConsumerService;
+import com.gokoy.delivery.domain.consumer.application.ConsumerServiceForAuth;
 
-@WebMvcTest(value = MemberController.class)
+@WebMvcTest(value = ConsumerController.class)
 public class SecurityTest {
 
 	@Autowired
@@ -25,10 +19,10 @@ public class SecurityTest {
 	private JwtTokenProvider jwtTokenProvider;
 
 	@MockBean
-	private MemberServiceForAuth memberServiceForAuth;
+	private ConsumerServiceForAuth consumerServiceForAuth;
 
 	@MockBean
-	private MemberService memberService;
+	private ConsumerService consumerService;
 
 //	@Test
 //	@WithMockUser(username = "member", roles = {"MEMBER"})

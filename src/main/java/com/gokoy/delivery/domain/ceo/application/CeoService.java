@@ -1,10 +1,10 @@
-package com.gokoy.delivery.domain.member.application;
+package com.gokoy.delivery.domain.ceo.application;
 
-import com.gokoy.delivery.domain.member.dao.MemberRepository;
-import com.gokoy.delivery.domain.member.domain.Member;
-import com.gokoy.delivery.domain.member.dto.MemberSignInRequest;
-import com.gokoy.delivery.domain.member.dto.MemberSignInResponse;
-import com.gokoy.delivery.domain.member.dto.MemberSignUpRequest;
+import com.gokoy.delivery.domain.ceo.dao.CeoRepository;
+import com.gokoy.delivery.domain.ceo.domain.Ceo;
+import com.gokoy.delivery.domain.ceo.dto.CeoSignInRequest;
+import com.gokoy.delivery.domain.ceo.dto.CeoSignUpRequest;
+import com.gokoy.delivery.global.common.response.JwtResponse;
 import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.global.config.security.JwtTokenProvider;
 import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
@@ -20,22 +20,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberService {
+public class CeoService {
 
-    private final MemberRepository memberRepository;
+    private final CeoRepository ceoRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public MemberSignInResponse signIn(MemberSignInRequest memberSignInRequest) {
-        Member member = getMember(memberSignInRequest.getEmail());
+    public JwtResponse signIn(CeoSignInRequest ceoSignInRequest) {
+        Ceo ceo = getMember(ceoSignInRequest.getEmail());
 
-        isPasswordCorrect(memberSignInRequest.getPassword(), member.getPassword());
+        isPasswordCorrect(ceoSignInRequest.getPassword(), ceo.getPassword());
 
-        return new MemberSignInResponse(jwtTokenProvider.createToken(member.getEmail(), member.getRole()));
+        return new JwtResponse(jwtTokenProvider.createToken(ceo.getEmail(), ceo.getRole()));
     }
 
-    public Member getMember(String email) {
-        return memberRepository.findByEmail(email)
+    public Ceo getMember(String email) {
+        return ceoRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
     }
 
@@ -46,16 +46,16 @@ public class MemberService {
     }
 
     @Transactional
-    public SimpleResponse signUp(MemberSignUpRequest memberSignUpRequest) {
-        existMember(memberSignUpRequest.getEmail());
+    public SimpleResponse signUp(CeoSignUpRequest ceoSignUpRequest) {
+        existMember(ceoSignUpRequest.getEmail());
 
-        memberRepository.save(memberSignUpRequest.toEntity(passwordEncoder));
+        ceoRepository.save(ceoSignUpRequest.toEntity(passwordEncoder));
 
         return SimpleResponse.success();
     }
 
     public void existMember(String email) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Optional<Ceo> optionalMember = ceoRepository.findByEmail(email);
 
         if (optionalMember.isPresent()) {
             throw new CustomInvalidValueException(ErrorCode.EMAIL_EXISTS);
