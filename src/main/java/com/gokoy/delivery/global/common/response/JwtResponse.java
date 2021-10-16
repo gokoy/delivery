@@ -1,11 +1,11 @@
-package com.gokoy.delivery.domain.member.dto;
+package com.gokoy.delivery.global.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberSignInResponse {
+public class JwtResponse {
 
 	private String jwt;
 }

@@ -1,4 +1,4 @@
-package com.gokoy.delivery.domain.member.domain;
+package com.gokoy.delivery.domain.consumer.domain;
 
 public enum Grade {
 

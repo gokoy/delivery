@@ -1,6 +1,7 @@
 package com.gokoy.delivery.domain.order.domain;
 
-import com.gokoy.delivery.domain.member.domain.Member;
+import com.gokoy.delivery.domain.consumer.domain.Consumer;
+import com.gokoy.delivery.global.common.model.User;
 import com.gokoy.delivery.domain.store.domain.Store;
 import com.gokoy.delivery.global.common.model.Address;
 import com.gokoy.delivery.global.common.model.BaseTimeEntity;
@@ -23,8 +24,8 @@ public class Order extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member orderer;
+    @JoinColumn(name = "consumer_id")
+    private Consumer orderer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
