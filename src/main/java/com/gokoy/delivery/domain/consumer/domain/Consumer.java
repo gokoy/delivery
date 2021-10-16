@@ -19,8 +19,8 @@ public class Consumer extends User {
 
     private String nickname;
 
-    @ElementCollection
-    @CollectionTable(name = "consumer_addresses", joinColumns = {
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "consumer_address", joinColumns = {
             @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id")
     })
     private List<Address> addresses = new ArrayList<>();

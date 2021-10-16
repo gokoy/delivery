@@ -79,6 +79,9 @@ public class Store extends BaseTimeEntity {
     private List<MenuOption> menuOptions = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "store_category", joinColumns = {
+            @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    })
     private Set<Category> categories = new HashSet<>();
 
     @Builder
