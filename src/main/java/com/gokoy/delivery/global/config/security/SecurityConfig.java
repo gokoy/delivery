@@ -35,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 인증을 사용하기 때문에 Session 사용 안함
                 .and()
                 .authorizeRequests()
-                .mvcMatchers("/consumer/sign-up", "/consumer/sign-in").permitAll()
-                .mvcMatchers("/ceo/sign-up", "/ceo/sign-in").permitAll()
+                .mvcMatchers("/consumers/sign-up", "/consumers/sign-in").permitAll()
+                .mvcMatchers("/ceos/sign-up", "/ceos/sign-in").permitAll()
                 .mvcMatchers("/v2/**",
                         "/configuration/**",
                         "/swagger*/**",
