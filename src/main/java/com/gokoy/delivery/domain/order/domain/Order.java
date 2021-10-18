@@ -35,7 +35,7 @@ public class Order extends BaseTimeEntity {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "delivery_address_name")),
+            @AttributeOverride(name = "name", column = @Column(name = "delivery_address")),
             @AttributeOverride(name = "detail", column = @Column(name = "delivery_address_detail")),
     })
     private Address address;
