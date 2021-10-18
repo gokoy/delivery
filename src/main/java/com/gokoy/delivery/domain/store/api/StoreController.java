@@ -1,10 +1,13 @@
 package com.gokoy.delivery.domain.store.api;
 
 import com.gokoy.delivery.domain.store.application.StoreService;
-import com.gokoy.delivery.domain.store.domain.StoreType;
+import com.gokoy.delivery.domain.store.dto.StoreRequest;
 import com.gokoy.delivery.domain.store.dto.SimpleStore;
+import com.gokoy.delivery.global.common.response.SimpleResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +25,8 @@ public class StoreController {
         return storeService.getSimpleStoresByCategory(storeType);
     }
 
-
+    @PostMapping
+    public ResponseEntity<SimpleResponse> createStore(StoreRequest storeRequest) {
+        return ResponseEntity.ok().body(storeService.createStore(storeRequest));
+    }
 }
