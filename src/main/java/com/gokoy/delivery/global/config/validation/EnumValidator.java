@@ -3,11 +3,11 @@ package com.gokoy.delivery.global.config.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class EnumValidator implements ConstraintValidator<Enum, String> {
-	private Enum annotation;
+public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
+	private ValidEnum annotation;
 
 	@Override
-	public void initialize(Enum constraintAnnotation) {
+	public void initialize(ValidEnum constraintAnnotation) {
 		this.annotation = constraintAnnotation;
 	}
 
