@@ -51,7 +51,7 @@ class ConsumerControllerTest {
                 .willReturn(new JwtResponse("jwt"));
 
         //when
-        ResultActions result = mvc.perform(post("/consumer/sign-in").content(body).contentType(MediaType.APPLICATION_JSON))
+        ResultActions result = mvc.perform(post("/consumers/sign-in").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
 
         //then
@@ -71,7 +71,7 @@ class ConsumerControllerTest {
 
         //when
         ResultActions result = mvc.perform(
-                post("/consumer/sign-up").content(body).contentType(MediaType.APPLICATION_JSON)).andDo(print());
+                post("/consumers/sign-up").content(body).contentType(MediaType.APPLICATION_JSON)).andDo(print());
 
         //then
         result

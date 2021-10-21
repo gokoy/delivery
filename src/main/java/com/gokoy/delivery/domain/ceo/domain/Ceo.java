@@ -21,7 +21,7 @@ public class Ceo extends User {
     private List<Store> stores = new ArrayList<>();
 
     public Ceo(String email, String password, String phone) {
-        super(email, password, "CEO", phone);
+        super(email, password, Role.CEO.name(), phone);
     }
 
     public void addStore(Store store) {

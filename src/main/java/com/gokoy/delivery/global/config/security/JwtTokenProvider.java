@@ -1,6 +1,9 @@
 package com.gokoy.delivery.global.config.security;
 
+import com.gokoy.delivery.domain.ceo.application.CeoServiceForAuth;
 import com.gokoy.delivery.domain.consumer.application.ConsumerServiceForAuth;
+import com.gokoy.delivery.global.common.model.Role;
+import com.gokoy.delivery.global.error.exception.CustomInvalidJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -27,6 +30,8 @@ public class JwtTokenProvider {
 
     private long tokenValidMillisecond = 1000L * 60 * 60; // 1000 milliseconds * 60 seconds * 60 minutes
 
+    private final CeoServiceForAuth ceoServiceForAuth;
+
     private final ConsumerServiceForAuth consumerServiceForAuth;
 
     @PostConstruct
@@ -35,7 +40,6 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String email, String role) {
-
         Claims claims = Jwts.claims().setSubject(email); // claim의 subject로 email 저장
         claims.put("role", role);
         Date now = new Date();
@@ -48,14 +52,33 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = consumerServiceForAuth.loadUserByUsername(this.getEmail(token));
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+        Claims claims = getClaims(token);
+        String role = (String) claims.get("role");
+        String email = claims.getSubject();
+        UserDetails userDetails = null;
+
+        switch (Role.valueOf(role)) {
+            case CEO:
+                userDetails = ceoServiceForAuth.loadUserByUsername(email);
+                break;
+            case CONSUMER:
+                userDetails = consumerServiceForAuth.loadUserByUsername(email);
+                break;
+        }
+
+        if (userDetails == null) {
+            throw new CustomInvalidJwtException();
+        }
+
+        return new UsernamePasswordAuthenticationToken(
+                userDetails.getUsername(),
                 userDetails.getPassword(),
-                userDetails.getAuthorities());
+                userDetails.getAuthorities()
+        );
     }
 
-    private String getEmail(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    private Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     /*
@@ -74,7 +97,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            return false;
+            throw new CustomInvalidJwtException();
         }
     }
 

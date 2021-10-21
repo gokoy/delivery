@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/consumer")
+@RequestMapping("/consumers")
 public class ConsumerController {
 
     private final ConsumerService consumerService;
