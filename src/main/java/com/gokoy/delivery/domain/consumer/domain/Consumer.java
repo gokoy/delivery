@@ -2,6 +2,7 @@ package com.gokoy.delivery.domain.consumer.domain;
 
 import com.gokoy.delivery.domain.order.domain.Order;
 import com.gokoy.delivery.global.common.model.Address;
+import com.gokoy.delivery.global.common.model.Role;
 import com.gokoy.delivery.global.common.model.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class Consumer extends User {
     List<Order> orders = new ArrayList<>();
 
     public Consumer(String email, String password, String phone) {
-        super(email, password, "CONSUMER", phone);
+        super(email, password, Role.CONSUMER.name(), phone);
         this.nickname = email.substring(0, email.indexOf('@'));
         this.grade = Grade.THANKFUL;
     }

@@ -1,6 +1,7 @@
 package com.gokoy.delivery.global.error;
 
 import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
+import com.gokoy.delivery.global.error.exception.CustomInvalidJwtException;
 import com.gokoy.delivery.global.error.exception.CustomInvalidValueException;
 import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
+    // Validation Exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<?> parameterInvalid(HttpServletRequest request, MethodArgumentNotValidException e) {
         List<String> details = e.getBindingResult()
@@ -45,4 +47,10 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
+    @ExceptionHandler(CustomInvalidJwtException.class)
+    protected ResponseEntity<?> invalidJwt(HttpServletRequest request, CustomInvalidJwtException e) {
+        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
 }

@@ -1,5 +1,6 @@
 package com.gokoy.delivery.domain.ceo.domain;
 
+import com.gokoy.delivery.global.common.model.Role;
 import com.gokoy.delivery.global.common.model.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,6 +18,6 @@ import javax.persistence.Entity;
 
 public class Ceo extends User {
     public Ceo(String email, String password, String phone) {
-        super(email, password, "CEO", phone);
+        super(email, password, Role.CEO.name(), phone);
     }
 }
