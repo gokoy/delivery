@@ -1,6 +1,7 @@
 package com.gokoy.delivery.global.config.security;
 
 import com.gokoy.delivery.domain.consumer.application.ConsumerServiceForAuth;
+import com.gokoy.delivery.global.common.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -37,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/consumers/sign-up", "/consumers/sign-in").permitAll()
                 .mvcMatchers("/ceos/sign-up", "/ceos/sign-in").permitAll()
+                .mvcMatchers("/store/**", "/test/ceo").hasRole(Role.CEO.name())
+                .mvcMatchers("/test/consumer").hasRole(Role.CONSUMER.name())
                 .mvcMatchers("/v2/**",
                         "/configuration/**",
                         "/swagger*/**",
@@ -46,11 +49,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class); // 지정된 필터 앞에 커스텀 필터를 추가
-
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(consumerServiceForAuth);
     }
 }
