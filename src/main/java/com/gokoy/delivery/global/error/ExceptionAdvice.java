@@ -7,6 +7,7 @@ import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,6 +51,19 @@ public class ExceptionAdvice {
     @ExceptionHandler(CustomInvalidJwtException.class)
     protected ResponseEntity<?> invalidJwt(HttpServletRequest request, CustomInvalidJwtException e) {
         ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
+
+    @ExceptionHandler(BindException.class)
+    protected ResponseEntity<?> bindException(HttpServletRequest request, BindException e) {
+        List<String> details = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fieldError -> "[" + fieldError.getField() + "] " + fieldError.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        ErrorResponse response = new ErrorResponse(ErrorCode.ARGUMENT_NOT_VALID, request.getRequestURI(), details);
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
