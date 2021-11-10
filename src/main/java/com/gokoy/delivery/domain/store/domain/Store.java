@@ -112,5 +112,4 @@ public class Store extends BaseTimeEntity {
     public void setCeo(Ceo ceo) {
         this.ceo = ceo;
     }
-
 }
