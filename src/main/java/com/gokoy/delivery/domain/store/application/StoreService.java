@@ -42,6 +42,7 @@ public class StoreService {
     }
 
 
+    @Transactional
     public SimpleResponse createStore(String userEmail, CreateStoreRequest createStoreRequest) {
         Ceo ceo = ceoRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
