@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class StoreRequestForType {
+public class StoreRequestForTypeRequest {
     @ValidEnum(enumClass = StoreType.class)
     private String storeType;
 }
