@@ -7,11 +7,13 @@ import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +29,8 @@ public class ExceptionAdvice {
     }
 
     // Validation Exception
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<?> parameterInvalid(HttpServletRequest request, MethodArgumentNotValidException e) {
+    @ExceptionHandler(BindException.class)
+    protected ResponseEntity<?> bindException(HttpServletRequest request, BindException e) {
         List<String> details = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -53,4 +55,13 @@ public class ExceptionAdvice {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<?> constraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
+        ErrorResponse response = new ErrorResponse(ErrorCode.ARGUMENT_NOT_VALID, request.getRequestURI(), Collections.singletonList(e.getMessage()));
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
+
+
 }

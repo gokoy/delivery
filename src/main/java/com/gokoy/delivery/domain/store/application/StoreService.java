@@ -1,9 +1,13 @@
 package com.gokoy.delivery.domain.store.application;
 
+import com.gokoy.delivery.domain.ceo.dao.CeoRepository;
+import com.gokoy.delivery.domain.ceo.domain.Ceo;
 import com.gokoy.delivery.domain.store.dao.StoreRepository;
 import com.gokoy.delivery.domain.store.domain.Store;
 import com.gokoy.delivery.domain.store.domain.StoreType;
-import com.gokoy.delivery.domain.store.dto.SimpleStore;
+import com.gokoy.delivery.domain.store.dto.CreateStoreRequest;
+import com.gokoy.delivery.domain.store.dto.SimpleStoreResponse;
+import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
 import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +22,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class StoreService {
 
-    private StoreRepository storeRepository;
+    private final CeoRepository ceoRepository;
+    private final StoreRepository storeRepository;
 
-    public List<SimpleStore> getSimpleStoresByCategory(String storeType) {
-        List<SimpleStore> simpleStores = new ArrayList<>();
+    public List<SimpleStoreResponse> getSimpleStoresByCategory(String storeType) {
+        List<SimpleStoreResponse> simpleStoreResponses = new ArrayList<>();
 
         List<Store> foundStores = storeRepository.findByCategory(StoreType.valueOf(storeType));
 
@@ -30,10 +35,24 @@ public class StoreService {
         }
 
         for (Store store : foundStores) {
-            simpleStores.add(SimpleStore.of(store));
+            simpleStoreResponses.add(SimpleStoreResponse.of(store));
         }
 
-        return simpleStores;
+        return simpleStoreResponses;
     }
 
+
+    @Transactional
+    public SimpleResponse createStore(String userEmail, CreateStoreRequest createStoreRequest) {
+        Ceo ceo = ceoRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
+
+        Store store = createStoreRequest.toEntity();
+        store.setCeo(ceo);
+        ceo.addStore(store);
+
+        storeRepository.save(store);
+
+        return SimpleResponse.success();
+    }
 }

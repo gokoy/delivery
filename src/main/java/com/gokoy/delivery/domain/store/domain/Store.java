@@ -1,5 +1,6 @@
 package com.gokoy.delivery.domain.store.domain;
 
+import com.gokoy.delivery.domain.ceo.domain.Ceo;
 import com.gokoy.delivery.domain.menu.domain.Menu;
 import com.gokoy.delivery.domain.menugroup.domain.MenuGroup;
 import com.gokoy.delivery.domain.menuoption.domain.MenuOption;
@@ -40,7 +41,7 @@ public class Store extends BaseTimeEntity {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "address_name")),
+            @AttributeOverride(name = "name", column = @Column(name = "address")),
             @AttributeOverride(name = "detail", column = @Column(name = "address_detail")),
     })
     private Address address;
@@ -62,6 +63,10 @@ public class Store extends BaseTimeEntity {
     private Money deliveryTip;
 
     //연관관계
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ceo_id")
+    private Ceo ceo;
 
     @OneToMany(mappedBy = "store")
     private List<MenuGroup> menuGroups = new ArrayList<>();
@@ -85,14 +90,18 @@ public class Store extends BaseTimeEntity {
     private Set<Category> categories = new HashSet<>();
 
     @Builder
-    public Store(String name, String phone, Money minimumOrderPrice) {
+    public Store(String name, String phone, String introduction, Address address, OperatingTime operatingTime, Money minimumOrderPrice, Money deliveryTip) {
         Assert.hasText(name, "name must not be empty");
         Assert.hasText(phone, "phone must not be empty");
         Assert.notNull(minimumOrderPrice, "minimumOrderPrice must not be empty");
 
         this.name = name;
         this.phone = phone;
+        this.introduction = introduction;
+        this.address = address;
+        this.operatingTime = operatingTime;
         this.minimumOrderPrice = minimumOrderPrice;
+        this.deliveryTip = deliveryTip;
     }
 
     public Store addCategory(Category category) {
@@ -100,4 +109,7 @@ public class Store extends BaseTimeEntity {
         return this;
     }
 
+    public void setCeo(Ceo ceo) {
+        this.ceo = ceo;
+    }
 }

@@ -11,7 +11,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = {EnumValidator.class})
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Enum {
+public @interface ValidEnum {
 	String message() default "Invalid value. This is not permitted.";
 
 	Class<?>[] groups() default {};
@@ -20,5 +20,5 @@ public @interface Enum {
 
 	Class<? extends java.lang.Enum<?>> enumClass();
 
-	boolean ignoreCase() default false;
+	boolean ignoreCase() default true;
 }

@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Address {
 
-	private String name;
+	private String address;
 
 	private String detail;
 
-	public Address(String name, String detail) {
-		this.name = name;
+	public Address(String address, String detail) {
+		this.address = address;
 		this.detail = detail;
 	}
 }
