@@ -14,7 +14,7 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
-public class CreateStoreRequest {
+public class StoreRequest {
 
     private String name;
 

@@ -2,8 +2,8 @@ package com.gokoy.delivery.domain.store.api;
 
 import com.gokoy.delivery.domain.store.application.StoreService;
 import com.gokoy.delivery.domain.store.domain.StoreType;
-import com.gokoy.delivery.domain.store.dto.CreateStoreRequest;
 import com.gokoy.delivery.domain.store.dto.SimpleStoreResponse;
+import com.gokoy.delivery.domain.store.dto.StoreRequest;
 import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.global.config.validation.ValidEnum;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +26,21 @@ public class StoreController {
     @GetMapping
     public List<SimpleStoreResponse> getSimpleStoresByCategory(@RequestParam
                                                                @ValidEnum(enumClass = StoreType.class,
-                                                                       message ="Invalid value. Please enter the correct store type.")
+                                                                       message = "Invalid value. Please enter the correct store type.")
                                                                        String storeType) {
         return storeService.getSimpleStoresByCategory(storeType.toUpperCase());
     }
 
     @PostMapping
-    public ResponseEntity<SimpleResponse> createStore(@AuthenticationPrincipal String userEmail, @Valid @RequestBody CreateStoreRequest createStoreRequest) {
-        return ResponseEntity.ok().body(storeService.createStore(userEmail, createStoreRequest));
+    public ResponseEntity<SimpleResponse> createStore(@AuthenticationPrincipal String userEmail, @Valid @RequestBody StoreRequest storeRequest) {
+        return ResponseEntity.ok().body(storeService.createStore(userEmail, storeRequest));
     }
+
+    @PutMapping("/{storeId}")
+    public ResponseEntity<SimpleResponse> updateStore(@AuthenticationPrincipal String userEmail,
+                                                      @PathVariable("storeId") Long storeId,
+                                                      @Valid @RequestBody StoreRequest storeRequest) {
+        return ResponseEntity.ok().body(storeService.updateStore(userEmail, storeId, storeRequest));
+    }
+
 }

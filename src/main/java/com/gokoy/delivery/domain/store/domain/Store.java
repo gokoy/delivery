@@ -90,11 +90,12 @@ public class Store extends BaseTimeEntity {
     private Set<Category> categories = new HashSet<>();
 
     @Builder
-    public Store(String name, String phone, String introduction, Address address, OperatingTime operatingTime, Money minimumOrderPrice, Money deliveryTip) {
+    public Store(Long id, String name, String phone, String introduction, Address address, OperatingTime operatingTime, Money minimumOrderPrice, Money deliveryTip) {
         Assert.hasText(name, "name must not be empty");
         Assert.hasText(phone, "phone must not be empty");
         Assert.notNull(minimumOrderPrice, "minimumOrderPrice must not be empty");
 
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.introduction = introduction;
@@ -111,5 +112,17 @@ public class Store extends BaseTimeEntity {
 
     public void setCeo(Ceo ceo) {
         this.ceo = ceo;
+    }
+
+    public Store updateStore(Store storeForUpdate) {
+        this.name = storeForUpdate.getName();
+        this.phone = storeForUpdate.getPhone();
+        this.introduction = storeForUpdate.getIntroduction();
+        this.address = storeForUpdate.getAddress();
+        this.operatingTime = storeForUpdate.getOperatingTime();
+        this.minimumOrderPrice = storeForUpdate.getMinimumOrderPrice();
+        this.deliveryTip = storeForUpdate.getDeliveryTip();
+
+        return this;
     }
 }

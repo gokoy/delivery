@@ -1,9 +1,6 @@
 package com.gokoy.delivery.global.error;
 
-import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
-import com.gokoy.delivery.global.error.exception.CustomInvalidJwtException;
-import com.gokoy.delivery.global.error.exception.CustomInvalidValueException;
-import com.gokoy.delivery.global.error.exception.ErrorCode;
+import com.gokoy.delivery.global.error.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +18,45 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionAdvice {
 
-    @ExceptionHandler(CustomEntityNotFoundException.class)
-    protected ResponseEntity<?> entityNotFound(HttpServletRequest request, CustomEntityNotFoundException e) {
+    @ExceptionHandler(CustomException.class)
+    protected ResponseEntity<?> customExceptionHandler(HttpServletRequest request, CustomException e) {
         ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
+//    @ExceptionHandler(CustomEntityNotFoundException.class)
+//    protected ResponseEntity<?> entityNotFound(HttpServletRequest request, CustomEntityNotFoundException e) {
+//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
+//
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+//    }
+//
+//    @ExceptionHandler(CustomInvalidValueException.class)
+//    protected ResponseEntity<?> invalidValue(HttpServletRequest request, CustomInvalidValueException e) {
+//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
+//
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+//    }
+//
+//    @ExceptionHandler(CustomInvalidJwtException.class)
+//    protected ResponseEntity<?> invalidJwt(HttpServletRequest request, CustomInvalidJwtException e) {
+//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
+//
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+//    }
+//
+//    @ExceptionHandler(CustomUnauthorizedException.class)
+//    protected ResponseEntity<?> unauthorized(HttpServletRequest request, CustomUnauthorizedException e) {
+//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
+//
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+//    }
+
     // Validation Exception
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<?> bindException(HttpServletRequest request, BindException e) {
+
         List<String> details = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -42,26 +68,10 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @ExceptionHandler(CustomInvalidValueException.class)
-    protected ResponseEntity<?> invalidValue(HttpServletRequest request, CustomInvalidValueException e) {
-        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
-
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-    }
-
-    @ExceptionHandler(CustomInvalidJwtException.class)
-    protected ResponseEntity<?> invalidJwt(HttpServletRequest request, CustomInvalidJwtException e) {
-        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
-
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<?> constraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
         ErrorResponse response = new ErrorResponse(ErrorCode.ARGUMENT_NOT_VALID, request.getRequestURI(), Collections.singletonList(e.getMessage()));
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
-
-
 }

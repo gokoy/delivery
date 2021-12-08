@@ -6,7 +6,8 @@ public enum ErrorCode {
 	PWD_MISMATCH(400, "C003", "The passwords do not match."),
 	ARGUMENT_NOT_VALID(400, "C004", "The argument is not valid."),
 	NO_RESULT(404, "C005", "No results were found for your search."),
-	INVALID_JWT(403, "C006", "Invalid JWT.")
+	INVALID_JWT(401, "C006", "Invalid JWT."),
+	UNAUTHORIZED(403, "C007", "Can not access to that resource.")
 	;
 
 	private int status;

@@ -5,10 +5,12 @@ import com.gokoy.delivery.domain.ceo.domain.Ceo;
 import com.gokoy.delivery.domain.store.dao.StoreRepository;
 import com.gokoy.delivery.domain.store.domain.Store;
 import com.gokoy.delivery.domain.store.domain.StoreType;
-import com.gokoy.delivery.domain.store.dto.CreateStoreRequest;
 import com.gokoy.delivery.domain.store.dto.SimpleStoreResponse;
+import com.gokoy.delivery.domain.store.dto.StoreRequest;
 import com.gokoy.delivery.global.common.response.SimpleResponse;
 import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
+import com.gokoy.delivery.global.error.exception.CustomInvalidValueException;
+import com.gokoy.delivery.global.error.exception.CustomUnauthorizedException;
 import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,15 +45,30 @@ public class StoreService {
 
 
     @Transactional
-    public SimpleResponse createStore(String userEmail, CreateStoreRequest createStoreRequest) {
+    public SimpleResponse createStore(String userEmail, StoreRequest storeRequest) {
         Ceo ceo = ceoRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
 
-        Store store = createStoreRequest.toEntity();
+        Store store = storeRequest.toEntity();
         store.setCeo(ceo);
         ceo.addStore(store);
 
         storeRepository.save(store);
+
+        return SimpleResponse.success();
+    }
+
+    @Transactional
+    public SimpleResponse updateStore(String userEmail, Long storeId, StoreRequest storeRequest) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.NO_RESULT));
+
+        if (!userEmail.equals(store.getCeo().getEmail())) {
+            throw new CustomUnauthorizedException(ErrorCode.UNAUTHORIZED);
+        }
+
+        Store storeForUpdate = storeRequest.toEntity();
+        store.updateStore(storeForUpdate);
 
         return SimpleResponse.success();
     }
