@@ -6,9 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = LocalTimeValidator.class)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ValidLocalTime {
     String message() default "Please follow the format. (hh:mm:ss)";
 
