@@ -1,7 +1,7 @@
 package com.gokoy.delivery.domain.store.dao;
 
-import com.gokoy.delivery.domain.store.domain.StoreType;
 import com.gokoy.delivery.domain.store.domain.Store;
+import com.gokoy.delivery.domain.store.domain.StoreType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface StoreRepositoryCustom {
     List<Store> findByCategory(StoreType storeType);
+
+    List<Store> findByCategoryOrderByDeliveryTipAsc(StoreType storeType);
+
+    List<Store> findByCategoryBetweenMinimumOrderPrice(StoreType storeType, Integer minPrice, Integer maxPrice);
 }
