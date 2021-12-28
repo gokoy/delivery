@@ -7,7 +7,8 @@ public enum ErrorCode {
 	ARGUMENT_NOT_VALID(400, "C004", "The argument is not valid."),
 	NO_RESULT(404, "C005", "No results were found for your search."),
 	INVALID_JWT(401, "C006", "Invalid JWT."),
-	UNAUTHORIZED(403, "C007", "Can not access to that resource.")
+	UNAUTHORIZED(403, "C007", "Can not access to that resource."),
+	NOT_FOUND(404, "C008", "Not found."),
 	;
 
 	private int status;

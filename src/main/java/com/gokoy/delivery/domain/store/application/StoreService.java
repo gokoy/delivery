@@ -5,19 +5,19 @@ import com.gokoy.delivery.domain.ceo.domain.Ceo;
 import com.gokoy.delivery.domain.store.dao.StoreRepository;
 import com.gokoy.delivery.domain.store.domain.Store;
 import com.gokoy.delivery.domain.store.domain.StoreType;
-import com.gokoy.delivery.domain.store.dto.SimpleStoreResponse;
-import com.gokoy.delivery.domain.store.dto.StoreRequest;
+import com.gokoy.delivery.domain.store.dto.CreateStoreDto;
+import com.gokoy.delivery.domain.store.dto.SimpleStoreDto;
+import com.gokoy.delivery.domain.store.dto.StoreDto;
+import com.gokoy.delivery.domain.store.dto.UpdateStoreDto;
 import com.gokoy.delivery.global.common.response.SimpleResponse;
-import com.gokoy.delivery.global.error.exception.CustomEntityNotFoundException;
-import com.gokoy.delivery.global.error.exception.CustomInvalidValueException;
 import com.gokoy.delivery.global.error.exception.CustomUnauthorizedException;
-import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,29 +27,11 @@ public class StoreService {
     private final CeoRepository ceoRepository;
     private final StoreRepository storeRepository;
 
-    public List<SimpleStoreResponse> getSimpleStoresByCategory(String storeType) {
-        List<SimpleStoreResponse> simpleStoreResponses = new ArrayList<>();
-
-        List<Store> foundStores = storeRepository.findByCategory(StoreType.valueOf(storeType));
-
-        if (foundStores.isEmpty()) {
-            throw new CustomEntityNotFoundException(ErrorCode.NO_RESULT);
-        }
-
-        for (Store store : foundStores) {
-            simpleStoreResponses.add(SimpleStoreResponse.of(store));
-        }
-
-        return simpleStoreResponses;
-    }
-
-
     @Transactional
-    public SimpleResponse createStore(String userEmail, StoreRequest storeRequest) {
-        Ceo ceo = ceoRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
+    public SimpleResponse createStore(String userEmail, CreateStoreDto createStoreDto) {
+        Ceo ceo = ceoRepository.findByEmail(userEmail).orElseThrow(NoSuchElementException::new);
 
-        Store store = storeRequest.toEntity();
+        Store store = createStoreDto.toEntity();
         store.setCeo(ceo);
         ceo.addStore(store);
 
@@ -58,18 +40,52 @@ public class StoreService {
         return SimpleResponse.success();
     }
 
+    public StoreDto readStore(String userEmail, Long storeId) {
+        Store store = storeRepository.findById(storeId).orElseThrow(NoSuchElementException::new);
+
+        isAuthorized(userEmail, store);
+
+        return StoreDto.from(store);
+    }
+
+    public List<SimpleStoreDto> readStoresByCategory(String storeType) {
+        List<Store> foundStores = storeRepository.findByCategory(StoreType.valueOf(storeType));
+
+        return foundStores
+                .stream()
+                .map(SimpleStoreDto::from)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
-    public SimpleResponse updateStore(String userEmail, Long storeId, StoreRequest storeRequest) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new CustomEntityNotFoundException(ErrorCode.NO_RESULT));
+    public SimpleResponse updateStore(String userEmail, Long storeId, UpdateStoreDto updateStoreDto) {
+        Store store = storeRepository.findById(storeId).orElseThrow(NoSuchElementException::new);
 
-        if (!userEmail.equals(store.getCeo().getEmail())) {
-            throw new CustomUnauthorizedException(ErrorCode.UNAUTHORIZED);
-        }
+        isAuthorized(userEmail, store);
 
-        Store storeForUpdate = storeRequest.toEntity();
+        Store storeForUpdate = updateStoreDto.toEntity();
         store.updateStore(storeForUpdate);
 
         return SimpleResponse.success();
+    }
+
+    @Transactional
+    public SimpleResponse deleteStore(String userEmail, Long storeId) {
+        Store store = storeRepository.findById(storeId).orElseThrow(NoSuchElementException::new);
+
+        isAuthorized(userEmail, store);
+
+        storeRepository.deleteById(storeId);
+
+        return SimpleResponse.success();
+    }
+
+
+    private boolean isAuthorized(String userEmail, Store store) {
+        if (!userEmail.equals(store.getCeo().getEmail())) {
+            throw new CustomUnauthorizedException();
+        }
+
+        return true;
     }
 }

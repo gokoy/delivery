@@ -1,6 +1,7 @@
 package com.gokoy.delivery.global.error;
 
-import com.gokoy.delivery.global.error.exception.*;
+import com.gokoy.delivery.global.error.exception.CustomException;
+import com.gokoy.delivery.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -25,33 +27,12 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-//    @ExceptionHandler(CustomEntityNotFoundException.class)
-//    protected ResponseEntity<?> entityNotFound(HttpServletRequest request, CustomEntityNotFoundException e) {
-//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
-//
-//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-//    }
-//
-//    @ExceptionHandler(CustomInvalidValueException.class)
-//    protected ResponseEntity<?> invalidValue(HttpServletRequest request, CustomInvalidValueException e) {
-//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
-//
-//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-//    }
-//
-//    @ExceptionHandler(CustomInvalidJwtException.class)
-//    protected ResponseEntity<?> invalidJwt(HttpServletRequest request, CustomInvalidJwtException e) {
-//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
-//
-//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-//    }
-//
-//    @ExceptionHandler(CustomUnauthorizedException.class)
-//    protected ResponseEntity<?> unauthorized(HttpServletRequest request, CustomUnauthorizedException e) {
-//        ErrorResponse response = new ErrorResponse(e.getErrorCode(), request.getRequestURI());
-//
-//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-//    }
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<?> noSuchElementExceptionHandler(HttpServletRequest request, CustomException e) {
+        ErrorResponse response = new ErrorResponse(ErrorCode.NOT_FOUND, request.getRequestURI());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
 
     // Validation Exception
     @ExceptionHandler(BindException.class)

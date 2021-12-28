@@ -11,7 +11,7 @@ public enum StoreType {
 	ASIAN_WESTERN(7, "아시안,양식"),
 	CHINESE(8, "중식"),
 	JOKBAL_BOSSAM(9, "족발,보쌈"),
-	MIDNINGHT_MEAL(10, "야식"),
+	MIDNIGHT_MEAL(10, "야식"),
 	STEAM_SOUP(11, "찜,탕"),
 	LUNCH_BOX(12, "도시락"),
 	FAST_FOOD(13, "패스트푸드"),

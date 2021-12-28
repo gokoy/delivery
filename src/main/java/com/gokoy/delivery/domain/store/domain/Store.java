@@ -90,7 +90,8 @@ public class Store extends BaseTimeEntity {
     private Set<Category> categories = new HashSet<>();
 
     @Builder
-    public Store(Long id, String name, String phone, String introduction, Address address, OperatingTime operatingTime, Money minimumOrderPrice, Money deliveryTip) {
+    public Store(Long id, String name, String phone, String introduction, Address address, OperatingTime operatingTime,
+                 Money minimumOrderPrice, Money deliveryTip) {
         Assert.hasText(name, "name must not be empty");
         Assert.hasText(phone, "phone must not be empty");
         Assert.notNull(minimumOrderPrice, "minimumOrderPrice must not be empty");
