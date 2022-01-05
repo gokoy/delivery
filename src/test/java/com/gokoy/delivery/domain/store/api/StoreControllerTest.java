@@ -18,6 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = StoreController.class,
@@ -25,34 +26,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 classes = {SecurityConfig.class, JwtAuthenticationFilter.class}))
 class StoreControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private StoreService storeService;
-
-    @Test
-    @WithMockUser(roles = "CEO")
-    void getSimpleStoresByCategory_유효성_검사() throws Exception {
-        //given
-        BDDMockito
-                .given(storeService.getSimpleStoresByCategory(any(String.class)))
-                .willReturn(null);
-
-        LinkedMultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
-        requestParam.set("storeTypeRequest", null);
-
-        //when
-        ResultActions result = mvc.perform(get("/stores")
-                .params(requestParam)
-                .contentType(MediaType.APPLICATION_JSON));
+//    @Autowired
+//    private MockMvc mvc;
+//
+//    @MockBean
+//    private StoreService storeService;
+//
+//    @Test
+//    @WithMockUser(roles = "CEO")
+//    void getSimpleStoresByCategory_유효성_검사() throws Exception {
+//        //given
+//        BDDMockito
+//                .given(storeService.readStoresByCategory(any(String.class)))
+//                .willReturn(null);
+//
+//        LinkedMultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
+//        requestParam.set("storeType", null);
+//
+//        //when
+//        ResultActions result = mvc.perform(get("/stores")
+//                        .params(requestParam)
+//                        .contentType(MediaType.APPLICATION_JSON))
 //                .andDo(print());
-
-        //then
-
-        result
-                .andExpect(status().is4xxClientError());
-
-    }
+//
+//        //then
+//        result
+//                .andExpect(status().is4xxClientError());
+//
+//    }
 
 }
