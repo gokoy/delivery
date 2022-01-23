@@ -8,10 +8,12 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SimpleResponse {
 
-	private String message;
+    public static final String successMessage = "success";
 
-	public static SimpleResponse success() {
-		return new SimpleResponse("success");
-	}
+    private String message;
+
+    public static SimpleResponse success() {
+        return new SimpleResponse(SimpleResponse.successMessage);
+    }
 
 }

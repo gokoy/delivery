@@ -6,6 +6,8 @@ import com.gokoy.delivery.global.common.model.Address;
 import com.gokoy.delivery.global.common.model.Money;
 import com.gokoy.delivery.global.config.validation.ValidLocalTime;
 import com.gokoy.delivery.global.config.validation.ValidPhone;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,8 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateStoreDto {
 
     private String name;
@@ -50,6 +54,7 @@ public class CreateStoreDto {
                 .operatingTime(new OperatingTime(businessDay, LocalTime.parse(openTime), LocalTime.parse(closeTime)))
                 .phone(phone)
                 .minimumOrderPrice(new Money(this.minimumOrderPrice))
+                .deliveryTip(new Money(this.deliveryTip))
                 .build();
     }
 }

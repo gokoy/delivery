@@ -1,4 +1,4 @@
-package com.gokoy.delivery.config.validation;
+package com.gokoy.delivery.global.config.validation;
 
 import com.gokoy.delivery.global.config.validation.ValidPhone;
 import org.assertj.core.api.Assertions;
@@ -55,9 +55,9 @@ public class PhoneValidationTest {
         Assertions.assertThat(validate).isNotEmpty();
     }
 
-    class PhoneValidationTestClass {
+    static class PhoneValidationTestClass {
         @ValidPhone
-        private String phone;
+        private final String phone;
 
         public PhoneValidationTestClass(String phone) {
             this.phone = phone;

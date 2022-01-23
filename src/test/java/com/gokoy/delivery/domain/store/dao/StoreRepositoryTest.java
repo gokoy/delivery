@@ -54,7 +54,7 @@ class StoreRepositoryTest {
         storeRepository.save(store3);
 
         Store store4 = Store.builder()
-                .name("store34")
+                .name("store4")
                 .phone("010-1234-5678")
                 .minimumOrderPrice(new Money(12000))
                 .deliveryTip(new Money(4000))

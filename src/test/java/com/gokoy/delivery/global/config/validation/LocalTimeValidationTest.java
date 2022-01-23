@@ -1,4 +1,4 @@
-package com.gokoy.delivery.config.validation;
+package com.gokoy.delivery.global.config.validation;
 
 import com.gokoy.delivery.global.config.validation.ValidLocalTime;
 import org.assertj.core.api.Assertions;
@@ -55,9 +55,9 @@ public class LocalTimeValidationTest {
         Assertions.assertThat(validate).isNotEmpty();
     }
 
-    public class LocalTimeValidationTestClass {
+    public static class LocalTimeValidationTestClass {
         @ValidLocalTime
-        private String localTime;
+        private final String localTime;
 
         public LocalTimeValidationTestClass(String localTime) {
             this.localTime = localTime;

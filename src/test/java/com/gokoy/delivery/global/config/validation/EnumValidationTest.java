@@ -1,4 +1,4 @@
-package com.gokoy.delivery.config.validation;
+package com.gokoy.delivery.global.config.validation;
 
 import com.gokoy.delivery.domain.store.domain.StoreType;
 import com.gokoy.delivery.global.config.validation.ValidEnum;

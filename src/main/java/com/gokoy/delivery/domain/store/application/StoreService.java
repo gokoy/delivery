@@ -28,16 +28,16 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public SimpleResponse createStore(String userEmail, CreateStoreDto createStoreDto) {
+    public StoreDto createStore(String userEmail, CreateStoreDto createStoreDto) {
         Ceo ceo = ceoRepository.findByEmail(userEmail).orElseThrow(NoSuchElementException::new);
 
         Store store = createStoreDto.toEntity();
         store.setCeo(ceo);
         ceo.addStore(store);
 
-        storeRepository.save(store);
+        Store savedStore = storeRepository.save(store);
 
-        return SimpleResponse.success();
+        return StoreDto.from(savedStore);
     }
 
     public StoreDto readStore(String userEmail, Long storeId) {
@@ -58,15 +58,15 @@ public class StoreService {
     }
 
     @Transactional
-    public SimpleResponse updateStore(String userEmail, Long storeId, UpdateStoreDto updateStoreDto) {
+    public StoreDto updateStore(String userEmail, Long storeId, UpdateStoreDto updateStoreDto) {
         Store store = storeRepository.findById(storeId).orElseThrow(NoSuchElementException::new);
 
         isAuthorized(userEmail, store);
 
         Store storeForUpdate = updateStoreDto.toEntity();
-        store.updateStore(storeForUpdate);
+        Store updatedStore = store.updateStore(storeForUpdate);
 
-        return SimpleResponse.success();
+        return StoreDto.from(updatedStore);
     }
 
     @Transactional
@@ -81,11 +81,10 @@ public class StoreService {
     }
 
 
-    private boolean isAuthorized(String userEmail, Store store) {
+    private void isAuthorized(String userEmail, Store store) {
         if (!userEmail.equals(store.getCeo().getEmail())) {
             throw new CustomUnauthorizedException();
         }
 
-        return true;
     }
 }

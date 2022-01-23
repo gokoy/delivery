@@ -26,8 +26,8 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping
-    public ResponseEntity<SimpleResponse> createStore(@AuthenticationPrincipal String userEmail,
-                                                      @Valid @RequestBody CreateStoreDto createStoreDto) {
+    public ResponseEntity<StoreDto> createStore(@AuthenticationPrincipal String userEmail,
+                                                @Valid @RequestBody CreateStoreDto createStoreDto) {
         return ResponseEntity.ok().body(storeService.createStore(userEmail, createStoreDto));
     }
 
@@ -45,9 +45,9 @@ public class StoreController {
     }
 
     @PutMapping("/{storeId}")
-    public ResponseEntity<SimpleResponse> updateStore(@AuthenticationPrincipal String userEmail,
-                                                      @PathVariable("storeId") Long storeId,
-                                                      @Valid @RequestBody UpdateStoreDto updateStoreDto) {
+    public ResponseEntity<StoreDto> updateStore(@AuthenticationPrincipal String userEmail,
+                                                @PathVariable("storeId") Long storeId,
+                                                @Valid @RequestBody UpdateStoreDto updateStoreDto) {
         return ResponseEntity.ok().body(storeService.updateStore(userEmail, storeId, updateStoreDto));
     }
 
